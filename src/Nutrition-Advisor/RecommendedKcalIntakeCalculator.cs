@@ -22,12 +22,21 @@
         BecomeFit
     }
 
+    public class Person
+    {
+        public Gender gender { get; set; }
+        public float weight { get; set; }
+        public float height { get; set; }
+        public int age { get; set; }
+        public ActivityLevel activityLevel { get; set; }
+    }
+
     public static class RecommendedKcalIntakeCalculator
     {
-        public static float Calculate(Gender gender, float weight, float height, int age, ActivityLevel activityLevel, Goal goal)
+        public static float Calculate(Person person, Goal goal)
         {
-            var tdee = CalculateTdee(gender, weight, height, age, activityLevel);
-            if(goal == Goal.LoseWeight)
+            var tdee = CalculateTdee(person);
+            if (goal == Goal.LoseWeight)
             {
                 return tdee - 500;
             }
@@ -41,10 +50,10 @@
             }
         }
 
-        private static float CalculateTdee(Gender gender, float weight, float height, int age, ActivityLevel activityLevel)
+        private static float CalculateTdee(Person person)
         {
-            float bmr = (gender == Gender.Male) ? CalculateBmrForMen(weight, height, age) : CalculateBmrForWomen(weight, height, age);
-            float tdee = CalculateTdee(bmr, activityLevel);
+            float bmr = (person.gender == Gender.Male) ? CalculateBmrForMen(person.weight, person.height, person.age) : CalculateBmrForWomen(person.weight, person.height, person.age);
+            float tdee = CalculateTdee(bmr, person.activityLevel);
             return tdee;
         }
 
