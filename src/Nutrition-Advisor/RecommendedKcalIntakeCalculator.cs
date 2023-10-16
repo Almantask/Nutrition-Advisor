@@ -1,4 +1,4 @@
-﻿namespace Nutrition_Advisor
+﻿namespace NutritionAdvisor
 {
     public enum Gender
     {
@@ -24,15 +24,17 @@
 
     public class Person
     {
-        public Gender gender { get; set; }
-        public float weight { get; set; }
-        public float height { get; set; }
-        public int age { get; set; }
-        public ActivityLevel activityLevel { get; set; }
+        public Gender Gender { get; set; }
+        public float Weight { get; set; }
+        public float Height { get; set; }
+        public int Age { get; set; }
+        public ActivityLevel ActivityLevel { get; set; }
     }
 
-    public static class RecommendedKcalIntakeCalculator
+    public static class RecommendedCalorieIntakeCalculator
     {
+        private static Dictionary<Goal, string[]> FoodRecommendations { get; set; } = InitializeFoodRecommendations();
+
         public static float Calculate(Person person, Goal goal)
         {
             var tdee = CalculateTdee(person);
@@ -52,8 +54,8 @@
 
         private static float CalculateTdee(Person person)
         {
-            float bmr = (person.gender == Gender.Male) ? CalculateBmrForMen(person.weight, person.height, person.age) : CalculateBmrForWomen(person.weight, person.height, person.age);
-            float tdee = CalculateTdee(bmr, person.activityLevel);
+            float bmr = (person.Gender == Gender.Male) ? CalculateBmrForMen(person.Weight, person.Height, person.Age) : CalculateBmrForWomen(person.Weight, person.Height, person.Age);
+            float tdee = CalculateTdee(bmr, person.ActivityLevel);
             return tdee;
         }
 
@@ -93,6 +95,36 @@
             }
 
             return tdee;
+        }
+
+        private static Dictionary<Goal, string[]> InitializeFoodRecommendations()
+        {
+            const string leanProteins = "Lean proteins (chicken, fish, tofu)";
+            const string wholeGrains = "Whole grains (brown rice, quinoa)";
+            const string fruitsAndVegetables = "Fruits and vegetables";
+            const string nutsAndSeeds = "Nuts and seeds";
+            const string vegetables = "Vegetables (especially leafy greens)";
+            const string oatsAndQuinoa = "Whole grains (oats, quinoa)";
+            const string lowFatDairy = "Low-fat dairy or dairy alternatives";
+            const string complexCarbs = "Complex carbohydrates (brown rice, pasta)";
+            const string healthyFats = "Healthy fats (avocado, nuts)";
+            Dictionary<Goal, string[]> foodRecommendations = new Dictionary<Goal, string[]>
+          {
+              { Goal.BecomeFit, new string[] { leanProteins, wholeGrains, fruitsAndVegetables, nutsAndSeeds } },
+              { Goal.LoseWeight, new string[] { leanProteins, vegetables, oatsAndQuinoa, lowFatDairy } },
+              { Goal.GainWeight, new string[] { leanProteins, complexCarbs, healthyFats, lowFatDairy } },
+              { (Goal)(-1), new string[] { "No specific recommendations for this goal" } } //default case
+          };
+            return foodRecommendations;
+        }
+
+        public static string[] GetFoodRecommendations(Goal goal)
+        {
+            if (FoodRecommendations.TryGetValue(goal, out string[] recommendations))
+            {
+                return recommendations;
+            }
+            return FoodRecommendations[(Goal)(-1)];
         }
     }
 }
