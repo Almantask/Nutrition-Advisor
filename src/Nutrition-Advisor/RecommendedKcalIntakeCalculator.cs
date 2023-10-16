@@ -15,13 +15,6 @@
         SuperActive
     }
 
-    public enum Goal
-    {
-        LoseWeight,
-        GainWeight,
-        BecomeFit
-    }
-
     public class Person
     {
         public Gender Gender { get; set; }
@@ -31,25 +24,52 @@
         public ActivityLevel ActivityLevel { get; set; }
     }
 
-    public static class RecommendedCalorieIntakeCalculator
+    public class Goal
     {
-        private static Dictionary<Goal, string[]> FoodRecommendations { get; set; } = InitializeFoodRecommendations();
+        public static readonly Goal LoseWeight = new Goal("Lose Weight", -500, new string[]
+        {
+                    "Lean proteins (chicken, fish, tofu)",
+                    "Vegetables (especially leafy greens)",
+                    "Oats and quinoa",
+                    "Low-fat dairy or dairy alternatives"
+        });
 
-        public static float Calculate(Person person, Goal goal)
+        public static readonly Goal GainWeight = new Goal("Gain Weight", 250, new string[]
+        {
+            "Lean proteins (chicken, fish, tofu)",
+            "Complex carbohydrates (brown rice, pasta)",
+            "Healthy fats (avocado, nuts)",
+            "Low-fat dairy or dairy alternatives"
+        });
+
+        public static readonly Goal BecomeFit = new Goal("Become Fit", 0, new string[]
+        {
+            "Lean proteins (chicken, fish, tofu)",
+            "Whole grains (brown rice, quinoa)",
+            "Fruits and vegetables",
+            "Nuts and seeds"
+        });
+
+        public string Name { get; }
+        public int RecommendedKcalAdjustment { get; }
+        public string[] FoodRecommendations { get; }
+
+        private Goal(string name, int recommendedKcalAdjustment, string[] foodRecommendations)
+        {
+            Name = name;
+            RecommendedKcalAdjustment = recommendedKcalAdjustment;
+            FoodRecommendations = foodRecommendations;
+        }
+
+        public float CalculateRecommendedKcalIntake(Person person)
         {
             var tdee = CalculateTdee(person);
-            if (goal == Goal.LoseWeight)
-            {
-                return tdee - 500;
-            }
-            else if (goal == Goal.GainWeight)
-            {
-                return tdee + 250;
-            }
-            else
-            {
-                return tdee;
-            }
+            return tdee + RecommendedKcalAdjustment;
+        }
+
+        public string[] GetFoodRecommendations()
+        {
+            return FoodRecommendations;
         }
 
         private static float CalculateTdee(Person person)
@@ -95,36 +115,6 @@
             }
 
             return tdee;
-        }
-
-        private static Dictionary<Goal, string[]> InitializeFoodRecommendations()
-        {
-            const string leanProteins = "Lean proteins (chicken, fish, tofu)";
-            const string wholeGrains = "Whole grains (brown rice, quinoa)";
-            const string fruitsAndVegetables = "Fruits and vegetables";
-            const string nutsAndSeeds = "Nuts and seeds";
-            const string vegetables = "Vegetables (especially leafy greens)";
-            const string oatsAndQuinoa = "Whole grains (oats, quinoa)";
-            const string lowFatDairy = "Low-fat dairy or dairy alternatives";
-            const string complexCarbs = "Complex carbohydrates (brown rice, pasta)";
-            const string healthyFats = "Healthy fats (avocado, nuts)";
-            Dictionary<Goal, string[]> foodRecommendations = new Dictionary<Goal, string[]>
-          {
-              { Goal.BecomeFit, new string[] { leanProteins, wholeGrains, fruitsAndVegetables, nutsAndSeeds } },
-              { Goal.LoseWeight, new string[] { leanProteins, vegetables, oatsAndQuinoa, lowFatDairy } },
-              { Goal.GainWeight, new string[] { leanProteins, complexCarbs, healthyFats, lowFatDairy } },
-              { (Goal)(-1), new string[] { "No specific recommendations for this goal" } } //default case
-          };
-            return foodRecommendations;
-        }
-
-        public static string[] GetFoodRecommendations(Goal goal)
-        {
-            if (FoodRecommendations.TryGetValue(goal, out string[] recommendations))
-            {
-                return recommendations;
-            }
-            return FoodRecommendations[(Goal)(-1)];
         }
     }
 }

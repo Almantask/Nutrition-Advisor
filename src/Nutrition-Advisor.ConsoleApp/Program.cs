@@ -9,14 +9,17 @@ var person = new Person()
     ActivityLevel = ActivityLevel.ModeratelyActive
 };
 
-var goal = Goal.LoseWeight;
-
-var recommendedCalorieIntake = RecommendedCalorieIntakeCalculator.Calculate(person, goal);
-Console.WriteLine(recommendedCalorieIntake);
-
-// print food recommendations
-var foodRecommendations = RecommendedCalorieIntakeCalculator.GetFoodRecommendations(goal);
-foreach (var foodRecommendation in foodRecommendations)
+// demo goals
+Goal[] goals = { Goal.GainWeight, Goal.LoseWeight, Goal.BecomeFit };
+foreach(var goal in goals)
 {
-    Console.WriteLine(foodRecommendation);
+    Console.WriteLine(goal.Name);
+    var recommendedCalorieIntake = goal.CalculateRecommendedKcalIntake(person);
+    Console.WriteLine(recommendedCalorieIntake);
+    // print food recommendations
+    var foodRecommendations = goal.GetFoodRecommendations();
+    foreach (var foodRecommendation in foodRecommendations)
+    {
+        Console.WriteLine(foodRecommendation);
+    }
 }
