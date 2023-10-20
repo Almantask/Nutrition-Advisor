@@ -1,29 +1,5 @@
 ﻿namespace NutritionAdvisor
 {
-    public enum Gender
-    {
-        Male,
-        Female
-    }
-
-    public enum ActivityLevel
-    {
-        Sedentary = 1,
-        LightlyActive,
-        ModeratelyActive,
-        VeryActive,
-        SuperActive
-    }
-
-    public class Person
-    {
-        public Gender Gender { get; set; }
-        public float Weight { get; set; }
-        public float Height { get; set; }
-        public int Age { get; set; }
-        public ActivityLevel ActivityLevel { get; set; }
-    }
-
     public class Goal
     {
         public static readonly Goal LoseWeight = new Goal("Lose Weight", -500, new string[]
