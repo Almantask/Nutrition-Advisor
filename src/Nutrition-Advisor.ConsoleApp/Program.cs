@@ -11,14 +11,14 @@ var person = new Person()
 
 // demo goals
 Goal[] goals = { Goal.GainWeight, Goal.LoseWeight, Goal.BecomeFit };
+var calculator = new NutritionCalculator();
 foreach(var goal in goals)
 {
     Console.WriteLine(goal.Name);
-    var recommendedCalorieIntake = goal.CalculateRecommendedKcalIntake(person);
+    var recommendedCalorieIntake = calculator.CalculateRecommendedKcalIntake(person, goal);
     Console.WriteLine(recommendedCalorieIntake);
     // print food recommendations
-    var foodRecommendations = goal.GetFoodRecommendations();
-    foreach (var foodRecommendation in foodRecommendations)
+    foreach (var foodRecommendation in goal.FoodRecommendations)
     {
         Console.WriteLine(foodRecommendation);
     }
