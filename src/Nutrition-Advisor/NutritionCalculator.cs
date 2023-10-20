@@ -1,10 +1,21 @@
+using Microsoft.Extensions.Logging;
+using Serilog.Core;
+
 namespace NutritionAdvisor
 {
     public class NutritionCalculator
     {
-        public float CalculateRecommendedKcalIntake(Person person, Goal goal)
+        private readonly ILogger<NutritionCalculator> _logger;
+
+        public NutritionCalculator(ILogger<NutritionCalculator> logger)
+        {
+            _logger = logger;
+        }
+
+        public virtual float CalculateRecommendedKcalIntake(Person person, Goal goal)
         {
             var tdee = CalculateTdee(person);
+            _logger.LogInformation("CalculateRecommendedKcalIntake completed.");
             return tdee + goal.RecommendedKcalAdjustment;
         }
 
