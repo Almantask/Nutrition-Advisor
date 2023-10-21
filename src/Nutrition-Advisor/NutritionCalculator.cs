@@ -3,7 +3,12 @@ using Serilog.Core;
 
 namespace NutritionAdvisor
 {
-    public class NutritionCalculator
+    public interface INutritionCalculator
+    {
+        float CalculateRecommendedKcalIntake(Person person, Goal goal);
+    }
+
+    public class NutritionCalculator : INutritionCalculator
     {
         private readonly ILogger<NutritionCalculator> _logger;
 

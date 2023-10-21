@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NutritionAdvisor;
 using Serilog;
-using Serilog.Extensions.Logging;
 
 var person = new Person()
 {
@@ -14,21 +14,25 @@ var person = new Person()
 
 // demo goals
 Goal[] goals = { Goal.GainWeight, Goal.LoseWeight, Goal.BecomeFit };
+
 using var serilogLogger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("log.txt")
     .CreateLogger();
-var microsoftLogger = new SerilogLoggerFactory(serilogLogger)
-    .CreateLogger<NutritionCalculator>();
-var calculator = new NutritionCalculator(microsoftLogger);
-foreach(var goal in goals)
+
+var serviceProvider = new ServiceCollection()
+    .AddLogging(builder => builder.AddSerilog(serilogLogger))
+    .AddSingleton<NutritionCalculator>()
+    .AddSingleton<NutritionResponseBuilder>()
+    .AddSingleton<NutritionService>()
+    .BuildServiceProvider();
+
+var logger = serviceProvider.GetRequiredService<ILogger<NutritionService>>();
+var service = serviceProvider.GetRequiredService<NutritionService>();
+
+foreach (var goal in goals)
 {
-    microsoftLogger.LogInformation(goal.Name);
-    var recommendedCalorieIntake = calculator.CalculateRecommendedKcalIntake(person, goal);
-    microsoftLogger.LogInformation(recommendedCalorieIntake.ToString());
-    // print food recommendations
-    foreach (var foodRecommendation in goal.FoodRecommendations)
-    {
-        microsoftLogger.LogInformation(foodRecommendation);
-    }
+    logger.LogInformation(goal.Name);
+    var response = service.GetNutritionResponse(goal, person);
+    logger.LogInformation(response.Message);
 }
