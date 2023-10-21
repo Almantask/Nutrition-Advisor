@@ -1,4 +1,7 @@
-﻿using NutritionAdvisor;
+﻿using Microsoft.Extensions.Logging;
+using NutritionAdvisor;
+using Serilog;
+using Serilog.Extensions.Logging;
 
 var person = new Person()
 {
@@ -11,15 +14,21 @@ var person = new Person()
 
 // demo goals
 Goal[] goals = { Goal.GainWeight, Goal.LoseWeight, Goal.BecomeFit };
-var calculator = new NutritionCalculator();
+using var serilogLogger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("log.txt")
+    .CreateLogger();
+var microsoftLogger = new SerilogLoggerFactory(serilogLogger)
+    .CreateLogger<NutritionCalculator>();
+var calculator = new NutritionCalculator(microsoftLogger);
 foreach(var goal in goals)
 {
-    Console.WriteLine(goal.Name);
+    microsoftLogger.LogInformation(goal.Name);
     var recommendedCalorieIntake = calculator.CalculateRecommendedKcalIntake(person, goal);
-    Console.WriteLine(recommendedCalorieIntake);
+    microsoftLogger.LogInformation(recommendedCalorieIntake.ToString());
     // print food recommendations
     foreach (var foodRecommendation in goal.FoodRecommendations)
     {
-        Console.WriteLine(foodRecommendation);
+        microsoftLogger.LogInformation(foodRecommendation);
     }
 }

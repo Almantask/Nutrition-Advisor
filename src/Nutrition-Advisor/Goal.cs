@@ -28,9 +28,9 @@
 
         public string Name { get; }
         public int RecommendedKcalAdjustment { get; }
-        public string[] FoodRecommendations { get; }
+        public IEnumerable<string> FoodRecommendations { get; }
 
-        private Goal(string name, int recommendedKcalAdjustment, string[] foodRecommendations)
+        private Goal(string name, int recommendedKcalAdjustment, IEnumerable<string> foodRecommendations)
         {
             Name = name;
             RecommendedKcalAdjustment = recommendedKcalAdjustment;
