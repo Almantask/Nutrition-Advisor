@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Nutrition_Advisor;
 using NutritionAdvisor;
 using Serilog;
 
@@ -22,13 +23,17 @@ using var serilogLogger = new LoggerConfiguration()
 
 var serviceProvider = new ServiceCollection()
     .AddLogging(builder => builder.AddSerilog(serilogLogger))
-    .AddSingleton<NutritionCalculator>()
-    .AddSingleton<NutritionResponseBuilder>()
-    .AddSingleton<NutritionService>()
+    .AddSingleton<INutritionCalculator, NutritionCalculator>()
+    .AddSingleton<INutritionResponseBuilder, NutritionResponseBuilder>()
+    .AddSingleton<INutritionService, NutritionService>()
+    .AddSingleton<IEmailAdapter, EmailAPIAdapter>()
+    .AddSingleton<ISmsAdapter, SmsAPIAdapter>()
+    .AddSingleton<INotificationsFacade, NotificationsFacade>()
+    .AddSingleton<NotificationsConfig>()
     .BuildServiceProvider();
 
 var logger = serviceProvider.GetRequiredService<ILogger<NutritionService>>();
-var service = serviceProvider.GetRequiredService<NutritionService>();
+var service = serviceProvider.GetRequiredService<INutritionService>();
 
 foreach (var goal in goals)
 {
