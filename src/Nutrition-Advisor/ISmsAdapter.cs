@@ -2,7 +2,7 @@
 {
     public interface ISmsAdapter
     {
-        void SendSmsNotification(string body, string recipient);
+        Task SendSmsNotificationAsync(string body, string recipient, CancellationToken ct);
     }
 
 }

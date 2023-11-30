@@ -2,7 +2,7 @@
 {
     public interface IEmailAdapter
     {
-        void SendEmailNotification(string body, string recipient);
+        Task SendEmailNotificationAsync(string body, string recipient, CancellationToken ct);
     }
 
 }

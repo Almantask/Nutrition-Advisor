@@ -9,9 +9,9 @@
             smsApi = new SmsAPI();
         }
 
-        public void SendSmsNotification(string body, string recipient)
+        public Task SendSmsNotificationAsync(string body, string recipient, CancellationToken ct)
         {
-            smsApi.SendSms(body, recipient);
+            return smsApi.SendSmsAsync(body, recipient);
         }
     }
 

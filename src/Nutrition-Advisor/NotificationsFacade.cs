@@ -1,24 +1,33 @@
-﻿namespace Nutrition_Advisor
+﻿using Polly;
+using System.Threading;
+
+namespace Nutrition_Advisor
 {
     public class NotificationsFacade : INotificationsFacade
     {
         private readonly IEmailAdapter _emailAdapter;
         private readonly ISmsAdapter _smsAdapter;
 
+        private readonly ResiliencePipeline pipeline;
+
         public NotificationsFacade(IEmailAdapter emailAdapter, ISmsAdapter smsAdapter)
         {
             _emailAdapter = emailAdapter;
             _smsAdapter = smsAdapter;
+
+            ResiliencePipeline pipeline = new ResiliencePipelineBuilder()
+                // Some config..
+                .Build();
         }
 
-        public void SendEmailNotification(string body, string recipient)
+        public ValueTask SendEmailNotificationAsync(string body, string recipient)
         {
-            _emailAdapter.SendEmailNotification(body, recipient);
+            return pipeline.ExecuteAsync(async token => await _emailAdapter.SendEmailNotificationAsync(body, recipient, token));
         }
 
-        public void SendSmsNotification(string body, string recipient)
+        public ValueTask SendSmsNotificationAsync(string body, string recipient)
         {
-            _smsAdapter.SendSmsNotification(body, recipient);
+            return pipeline.ExecuteAsync(async token => await _smsAdapter.SendSmsNotificationAsync(body, recipient, token));
         }
     }
 

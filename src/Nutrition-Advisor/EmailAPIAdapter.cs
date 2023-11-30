@@ -9,9 +9,9 @@
             emailApi = new EmailAPI();
         }
 
-        public void SendEmailNotification(string body, string recipient)
+        public Task SendEmailNotificationAsync(string body, string recipient, CancellationToken ct)
         {
-            emailApi.SendEmail(body, recipient);
+            return emailApi.SendEmailAsync(body, recipient);
         }
     }
 
