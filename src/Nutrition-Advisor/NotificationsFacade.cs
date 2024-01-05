@@ -15,8 +15,8 @@ namespace Nutrition_Advisor
             _emailAdapter = emailAdapter;
             _smsAdapter = smsAdapter;
 
-            ResiliencePipeline pipeline = new ResiliencePipelineBuilder()
-                // Some config..
+            pipeline = new ResiliencePipelineBuilder()
+                .AddRetry(new Polly.Retry.RetryStrategyOptions { MaxRetryAttempts = 5 })
                 .Build();
         }
 

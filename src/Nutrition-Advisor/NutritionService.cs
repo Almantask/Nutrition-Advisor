@@ -36,7 +36,7 @@ namespace NutritionAdvisor
 
             if(_config.IsEmailEnabled)
             {
-                _notifier.SendEmailNotification(response.Message, _config.Email);
+                _notifier.SendEmailNotificationAsync(response.Message, _config.Email);
             }
             else
             {
@@ -45,7 +45,7 @@ namespace NutritionAdvisor
 
             if(_config.IsSmsEnabled)
             {
-                _notifier.SendSmsNotification(response.Message, _config.Phone);
+                _notifier.SendSmsNotificationAsync(response.Message, _config.Phone);
             }
             else
             {

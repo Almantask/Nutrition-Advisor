@@ -4,7 +4,7 @@
     {
         public void SendSms(string body, string recipient)
         {
-            Console.WriteLine($"Sending SMS to {recipient} with body: {body}");
+            ErrorSimulator.RunWithTransientError(() => Console.WriteLine($"Sending SMS to {recipient} with body: {body}"));
         }
 
         public Task SendSmsAsync(string body, string recipient)

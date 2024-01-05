@@ -2,7 +2,7 @@
 {
     public interface INotificationsFacade
     {
-        void SendEmailNotification(string body, string recipient);
-        void SendSmsNotification(string body, string recipient);
+        ValueTask SendEmailNotificationAsync(string body, string recipient);
+        ValueTask SendSmsNotificationAsync(string body, string recipient);
     }
 }

@@ -41,3 +41,5 @@ foreach (var goal in goals)
     var response = service.GetNutritionResponse(goal, person);
     logger.LogInformation(response.Message);
 }
+
+Console.ReadLine();
