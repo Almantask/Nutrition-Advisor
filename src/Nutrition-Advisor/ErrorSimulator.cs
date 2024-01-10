@@ -2,7 +2,7 @@
 {
     public static class ErrorSimulator
     {
-        public static int ErrorRate = 50;
+        public static int ErrorRate = 10;
 
         public static void RunWithTransientError(Action action)
         {

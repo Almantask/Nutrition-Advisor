@@ -30,6 +30,8 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<ISmsAdapter, SmsAPIAdapter>()
     .AddSingleton<INotificationsFacade, NotificationsFacade>()
     .AddSingleton<NotificationsConfig>()
+    .AddSingleton<IFoodApiAdapter, FoodApiAdapter>()
+    .AddSingleton<IFoodProductsProvider, FoodProductsProvider>()
     .BuildServiceProvider();
 
 var logger = serviceProvider.GetRequiredService<ILogger<NutritionService>>();
@@ -38,7 +40,11 @@ var service = serviceProvider.GetRequiredService<INutritionService>();
 foreach (var goal in goals)
 {
     logger.LogInformation(goal.Name);
-    var response = service.GetNutritionResponse(goal, person);
+    var request = new NutritionRequest { Food = new[] {
+        new Food { Name = "Smoothie", AmountG = 500 },
+        new Food { Name = "Chocolate", AmountG = 100 }}
+    , Goal = goal, Person = person };
+    var response = await service.GetNutritionResponse(request);
     logger.LogInformation(response.Message);
 }
 

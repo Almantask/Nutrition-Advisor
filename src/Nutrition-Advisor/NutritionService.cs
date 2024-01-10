@@ -3,9 +3,10 @@ using Nutrition_Advisor;
 
 namespace NutritionAdvisor
 {
+
     public interface INutritionService
     {
-        NutritionResponse GetNutritionResponse(Goal goal, Person person);
+        Task<NutritionResponse> GetNutritionResponse(NutritionRequest request);
     }
 
     public class NutritionService : INutritionService
@@ -15,26 +16,39 @@ namespace NutritionAdvisor
         private readonly INutritionCalculator _calculator;
         private readonly INotificationsFacade _notifier;
         private readonly NotificationsConfig _config;
+        private readonly IFoodProductsProvider _foodProductsProvider;
 
         public NutritionService(ILogger<NutritionService> logger,
             INutritionResponseBuilder responseBuilder,
             INutritionCalculator calculator,
             INotificationsFacade notifier,
-            NotificationsConfig config)
+            NotificationsConfig config,
+            IFoodProductsProvider foodProductsProvider)
         {
             _logger = logger;
             _responseBuilder = responseBuilder;
             _calculator = calculator;
             _notifier = notifier;
             _config = config;
+            _foodProductsProvider = foodProductsProvider;
         }
 
-        public NutritionResponse GetNutritionResponse(Goal goal, Person person)
+        public async Task<NutritionResponse> GetNutritionResponse(NutritionRequest request)
         {
-            var recommendedKcalIntake = _calculator.CalculateRecommendedKcalIntake(person, goal);
-            var response = _responseBuilder.Build(goal, recommendedKcalIntake);
+            var recommendedKcalIntake = _calculator.CalculateRecommendedKcalIntake(request.Person, request.Goal);
+            var foodProductsWithNutritionValue = await _foodProductsProvider.GetFoodProductsAsync(request.Food.Select(f => f.Name));
+            var response = _responseBuilder.Build(request.Goal, recommendedKcalIntake, foodProductsWithNutritionValue.Values, request.Food);
 
-            if(_config.IsEmailEnabled)
+            SendNotification(response);
+
+            _logger.LogInformation($"Nutrition response generated for goal {request.Goal.Name}.");
+
+            return response;
+        }
+
+        private void SendNotification(NutritionResponse response)
+        {
+            if (_config.IsEmailEnabled)
             {
                 _notifier.SendEmailNotificationAsync(response.Message, _config.Email);
             }
@@ -43,7 +57,7 @@ namespace NutritionAdvisor
                 _logger.LogInformation("Email notifications are disabled.");
             }
 
-            if(_config.IsSmsEnabled)
+            if (_config.IsSmsEnabled)
             {
                 _notifier.SendSmsNotificationAsync(response.Message, _config.Phone);
             }
@@ -51,10 +65,6 @@ namespace NutritionAdvisor
             {
                 _logger.LogInformation("SMS notifications are disabled.");
             }
-
-            _logger.LogInformation($"Nutrition response generated for goal {goal.Name}.");
-
-            return response;
         }
     }
 }
