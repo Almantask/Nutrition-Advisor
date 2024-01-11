@@ -6,6 +6,11 @@ namespace NutritionAdvisor
     using System.Linq;
     using System.Threading.Tasks;
 
+    public interface IFoodProductsProvider
+    {
+        Task<Dictionary<string, FoodProperties>> GetFoodProductsAsync(IEnumerable<string> food);
+    }
+
     public class FoodProductsProvider : IFoodProductsProvider
     {
         private readonly IFoodApiAdapter foodApiAdapter;

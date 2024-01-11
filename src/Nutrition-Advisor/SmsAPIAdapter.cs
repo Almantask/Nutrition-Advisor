@@ -1,5 +1,10 @@
 ﻿namespace Nutrition_Advisor
 {
+    public interface ISmsAdapter
+    {
+        Task SendSmsNotificationAsync(string body, string recipient, CancellationToken ct);
+    }
+
     public class SmsAPIAdapter : ISmsAdapter
     {
         private readonly SmsAPI smsApi;
