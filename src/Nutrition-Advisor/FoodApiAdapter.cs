@@ -1,6 +1,6 @@
 ﻿namespace NutritionAdvisor
 {
-    public interface IFoodApiAdapter
+        public interface IFoodApiAdapter
     {
         Task<Recipe> GetRecipe(string foodItem);
         Task<IEnumerable<string>> GetIngredientsAsync(string compositeFood);

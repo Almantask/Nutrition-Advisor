@@ -36,24 +36,10 @@ namespace NutritionAdvisor
 
                 // If not in the cache, check if it's a composite food
                 var recipe = await foodApiAdapter.GetRecipe(foodItem);
+                foodProperty = await GetFoodProperties(recipe, foodItem);
+                cache.TryAdd(foodItem, foodProperty);
 
-                if (recipe != null)
-                {
-                    var recipeIngredientFoodProperties = await GetFoodProductsAsync(recipe.Ingredients);
-                    var compositeFoodProperties = CalculateCompositeFoodProperties(recipeIngredientFoodProperties.Values);
-                    compositeFoodProperties.Name = foodItem;
-                    cache.TryAdd(foodItem, compositeFoodProperties);
-
-                    return new KeyValuePair<string, FoodProperties>(foodItem, compositeFoodProperties);
-                }
-                else
-                {
-                    // If it's not a composite food, get the food property directly
-                    foodProperty = await foodApiAdapter.GetFoodPropertyAsync(foodItem);
-                    cache.TryAdd(foodItem, foodProperty);
-
-                    return new KeyValuePair<string, FoodProperties>(foodItem, foodProperty);
-                }
+                return new KeyValuePair<string, FoodProperties>(foodItem, foodProperty);
             });
 
             var results = await Task.WhenAll(tasks);
@@ -68,13 +54,45 @@ namespace NutritionAdvisor
             foreach (var ingredient in ingredients)
             {
 
-                    sumProperties.Kcal += ingredient.Kcal;
-                    sumProperties.Protein += ingredient.Protein;
-                    sumProperties.Carbohydrates += ingredient.Carbohydrates;
-                    sumProperties.Fat += ingredient.Fat;
+                sumProperties.Kcal += ingredient.Kcal;
+                sumProperties.Protein += ingredient.Protein;
+                sumProperties.Carbohydrates += ingredient.Carbohydrates;
+                sumProperties.Fat += ingredient.Fat;
             }
 
             return sumProperties;
+        }
+
+        private Task<FoodProperties> GetFoodProperties(Recipe recipe, string foodItem)
+        {
+            if (recipe == null)
+            {
+                return GetFoodPropertiesFor(foodItem);
+            }
+
+            return GetFoodPropertiesFor(recipe);
+
+        }
+
+        private async Task<FoodProperties> GetFoodPropertiesFor(string foodItem)
+        {
+            // If it's not a composite food, get the food property directly
+            var foodProperty = await foodApiAdapter.GetFoodPropertyAsync(foodItem);
+            if (foodProperty == null)
+            {
+                throw new Exception($"Food property {foodItem} not found");
+            }
+
+            return foodProperty;
+        }
+
+        private async Task<FoodProperties> GetFoodPropertiesFor(Recipe recipe)
+        {
+            var recipeIngredientFoodProperties = await GetFoodProductsAsync(recipe.Ingredients);
+            var compositeFoodProperties = CalculateCompositeFoodProperties(recipeIngredientFoodProperties.Values);
+            compositeFoodProperties.Name = recipe.Name;
+
+            return compositeFoodProperties;
         }
     }
 
