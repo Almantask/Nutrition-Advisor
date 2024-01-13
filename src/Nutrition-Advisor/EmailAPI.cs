@@ -4,7 +4,7 @@
     {
         public void SendEmail(string body, string recipient)
         {
-            ErrorSimulator.RunWithTransientError(() => Console.WriteLine($"Sending email to {recipient} with body: {body}"));
+            ErrorSimulator.RunWithTransientError(() => Console.WriteLine($"Sending email to {recipient} with body:{Environment.NewLine}{body}"));
         }
 
         public Task SendEmailAsync(string body, string recipient)

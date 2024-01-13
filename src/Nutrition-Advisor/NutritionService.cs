@@ -17,13 +17,15 @@ namespace NutritionAdvisor
         private readonly INotificationsFacade _notifier;
         private readonly NotificationsConfig _config;
         private readonly IFoodProductsProvider _foodProductsProvider;
+        private readonly IFoodEvaluator _foodEvaluator;
 
         public NutritionService(ILogger<NutritionService> logger,
             INutritionResponseBuilder responseBuilder,
             INutritionCalculator calculator,
             INotificationsFacade notifier,
             NotificationsConfig config,
-            IFoodProductsProvider foodProductsProvider)
+            IFoodProductsProvider foodProductsProvider,
+            IFoodEvaluator foodEvaluator)
         {
             _logger = logger;
             _responseBuilder = responseBuilder;
@@ -31,13 +33,16 @@ namespace NutritionAdvisor
             _notifier = notifier;
             _config = config;
             _foodProductsProvider = foodProductsProvider;
+            _foodEvaluator = foodEvaluator;
         }
 
         public async Task<NutritionResponse> GetNutritionResponse(NutritionRequest request)
         {
             var recommendedKcalIntake = _calculator.CalculateRecommendedKcalIntake(request.Person, request.Goal);
             var foodProductsWithNutritionValue = await _foodProductsProvider.GetFoodProductsAsync(request.Food.Select(f => f.Name));
-            var response = _responseBuilder.Build(request.Goal, recommendedKcalIntake, foodProductsWithNutritionValue.Values, request.Food);
+            var dietaryComparison = _foodEvaluator.CompareFoodConsumedToGoal(request, foodProductsWithNutritionValue.Values, recommendedKcalIntake);
+            
+            var response = _responseBuilder.Build(request.Goal, dietaryComparison);
 
             SendNotification(response);
 

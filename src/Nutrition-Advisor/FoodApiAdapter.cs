@@ -24,10 +24,9 @@
 
             foodDatabase = new Dictionary<string, FoodProperties>
             {
-                { "Apple", new FoodProperties { Name = "Apple", Kcal = 52, Protein = 0.3f, Carbohydrates = 14, Fat = 0.2f } },
-                { "Banana", new FoodProperties { Name = "Banana", Kcal = 105, Protein = 1.3f, Carbohydrates = 27, Fat = 0.3f } },
-                { "Chocolate", new FoodProperties { Name = "Chocolate", Kcal = 546, Protein = 5.3f, Carbohydrates = 58, Fat = 32.4f } },
-                // Add more food items as needed
+                { "Apple", new FoodProperties { Name = "Apple", Kcal = 52, Protein = 0.3f, Carbohydrates = 14, Fat = 0.2f, Sugar = 10.4f } },
+                { "Banana", new FoodProperties { Name = "Banana", Kcal = 105, Protein = 1.3f, Carbohydrates = 27, Fat = 0.3f, Sugar = 14.4f } },
+                { "Chocolate", new FoodProperties { Name = "Chocolate", Kcal = 546, Protein = 5.3f, Carbohydrates = 58, Fat = 32.4f, Sugar = 52.2f } },
             };
         }
 

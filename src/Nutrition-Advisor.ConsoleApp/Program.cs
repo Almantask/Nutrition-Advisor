@@ -32,6 +32,7 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<NotificationsConfig>()
     .AddSingleton<IFoodApiAdapter, FoodApiAdapter>()
     .AddSingleton<IFoodProductsProvider, FoodProductsProvider>()
+    .AddSingleton<IFoodEvaluator, FoodEvaluator>()
     .BuildServiceProvider();
 
 var logger = serviceProvider.GetRequiredService<ILogger<NutritionService>>();
