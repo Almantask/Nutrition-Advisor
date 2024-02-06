@@ -26,11 +26,6 @@
             "Nuts and seeds"
         }, minProteinPerKg: 1.6f);
 
-        public const float MaxSugarMale = 38;
-        public const float MaxSugarFemale = 25;
-        public const float MaxFatOfTotalKcal = 0.25f;
-        public const float MaxCarbsOfTotalKcal = 0.5f;
-
         public string Name { get; }
         public int RecommendedKcalAdjustment { get; }
         public IEnumerable<string> FoodRecommendations { get; }
