@@ -23,7 +23,7 @@ using var serilogLogger = new LoggerConfiguration()
 
 var serviceProvider = new ServiceCollection()
     .AddLogging(builder => builder.AddSerilog(serilogLogger))
-    .AddSingleton<INutritionCalculator, NutritionCalculator>()
+    .AddSingleton<IRecommendedKcalCalculator, RecommendedKcalCalculator>()
     .AddSingleton<INutritionResponseBuilder, NutritionResponseBuilder>()
     .AddSingleton<INutritionService, NutritionService>()
     .AddSingleton<IEmailAdapter, EmailAPIAdapter>()
@@ -33,6 +33,7 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IFoodApiAdapter, FoodApiAdapter>()
     .AddSingleton<IFoodProductsProvider, FoodProductsProvider>()
     .AddSingleton<IFoodEvaluator, FoodEvaluator>()
+    .AddSingleton<IRecommendedDailyIntakeCalculator, RecommendedDailyIntakeCalculator>()
     .BuildServiceProvider();
 
 var logger = serviceProvider.GetRequiredService<ILogger<NutritionService>>();

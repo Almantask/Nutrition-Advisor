@@ -3,21 +3,22 @@ using Serilog.Core;
 
 namespace NutritionAdvisor
 {
-    public interface INutritionCalculator
+    // TODO: Move this to another place - 
+    public interface IRecommendedKcalCalculator
     {
         float CalculateRecommendedKcalIntake(Person person, Goal goal);
     }
 
-    public class NutritionCalculator : INutritionCalculator
+    public class RecommendedKcalCalculator : IRecommendedKcalCalculator
     {
-        private readonly ILogger<NutritionCalculator> _logger;
+        private readonly ILogger<RecommendedKcalCalculator> _logger;
 
-        public NutritionCalculator(ILogger<NutritionCalculator> logger)
+        public RecommendedKcalCalculator(ILogger<RecommendedKcalCalculator> logger)
         {
             _logger = logger;
         }
 
-        public virtual float CalculateRecommendedKcalIntake(Person person, Goal goal)
+        public float CalculateRecommendedKcalIntake(Person person, Goal goal)
         {
             var tdee = CalculateTdee(person);
             _logger.LogInformation("CalculateRecommendedKcalIntake completed.");

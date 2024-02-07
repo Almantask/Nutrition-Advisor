@@ -31,19 +31,19 @@ namespace NutritionAdvisor
             formattedResponse.AppendLine("|----------|----------------|---------------------|------------------|");
 
             // Sugar
-            formattedResponse.AppendLine($"| Sugar    | {diet.SugarConsumed,10:F2}g    | {diet.MaxSugarRecommendation,15:F2}g    | {diet.SugarConsumed - diet.MaxSugarRecommendation,12:F2}g    |");
+            formattedResponse.AppendLine($"| Sugar    | {diet.Daily.Sugar,10:F2}g    | {diet.Recommended.MaxSugar,15:F2}g    | {diet.Daily.Sugar - diet.Recommended.MaxSugar,12:F2}g    |");
 
             // Fat
-            formattedResponse.AppendLine($"| Fat      | {diet.FatConsumed,10:F2}g    | {diet.MaxFatRecommendation,15:F2}g    | {diet.FatConsumed - diet.MaxFatRecommendation,12:F2}g    |");
+            formattedResponse.AppendLine($"| Fat      | {diet.Daily.Fat,10:F2}g    | {diet.Recommended.MaxFat,15:F2}g    | {diet.Daily.Fat - diet.Recommended.MaxFat,12:F2}g    |");
 
             // Protein
-            formattedResponse.AppendLine($"| Protein  | {diet.ProteinConsumed,10:F2}g    | {diet.MinProteinRecommendation,15:F2}g    | {diet.MinProteinRecommendation - diet.ProteinConsumed,12:F2}g    |");
+            formattedResponse.AppendLine($"| Protein  | {diet.Daily.Protein,10:F2}g    | {diet.Recommended.MinProtein,15:F2}g    | {diet.Daily.Protein - diet.Recommended.MinProtein,12:F2}g    |");
 
             // Carbs
-            formattedResponse.AppendLine($"| Carbs    | {diet.CarbsConsumed,10:F2}g    | {diet.MaxCarbsRecommendation,15:F2}g    | {diet.CarbsConsumed - diet.MaxCarbsRecommendation,12:F2}g    |");
+            formattedResponse.AppendLine($"| Carbs    | {diet.Daily.Carbohydrates,10:F2}g    | {diet.Recommended.MaxCarbs,15:F2}g    | {diet.Daily.Carbohydrates - diet.Recommended.MaxCarbs,12:F2}g    |");
 
             // Calories
-            formattedResponse.AppendLine($"| Calories | {diet.KcalConsumed,10:F2}kcal | {diet.KcalRecommendation,15:F2}kcal | {diet.KcalConsumed - diet.KcalRecommendation,12:F2}kcal |");
+            formattedResponse.AppendLine($"| Calories | {diet.Daily.Kcal,10:F2}kcal | {diet.Recommended.MaxKcal,15:F2}kcal | {diet.Daily.Kcal - diet.Recommended.MaxKcal,12:F2}kcal |");
 
             // Food Recommendations
             formattedResponse.AppendLine("\nFood Recommendations:");

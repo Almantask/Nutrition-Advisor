@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using static NutritionAdvisor.DailyFoodIntake;
-
-namespace NutritionAdvisor
+﻿namespace NutritionAdvisor
 {
     public class DietComparison
     {
@@ -13,16 +8,34 @@ namespace NutritionAdvisor
 
     public interface IFoodEvaluator
     {
-        DietComparison CompareFoodConsumedToGoal(NutritionRequest request, IEnumerable<FoodProperties> foodProperties, float recommendedKcalIntake);
+        DietComparison CompareFoodConsumedToGoal(NutritionRequest request, IEnumerable<FoodProperties> foodProperties);
     }
 
     public class FoodEvaluator : IFoodEvaluator
     {
-        public DietComparison CompareFoodConsumedToGoal(NutritionRequest request, IEnumerable<FoodProperties> foodProperties, float recommendedKcalIntake)
+        private readonly IRecommendedKcalCalculator _recommendedDailyKcalCalculator;
+        private readonly IRecommendedDailyIntakeCalculator _recommendedDailyIntakeCalculator;
+
+        public FoodEvaluator(IRecommendedDailyIntakeCalculator recommendedDailyIntakeCalculator, IRecommendedKcalCalculator calculator)
+        {
+            _recommendedDailyIntakeCalculator = recommendedDailyIntakeCalculator;
+            _recommendedDailyKcalCalculator = calculator;
+        }
+
+        public DietComparison CompareFoodConsumedToGoal(NutritionRequest request, IEnumerable<FoodProperties> foodProperties)
         {
             var food = foodProperties.Join(request.Food, fp => fp.Name, f => f.Name, (fp, f) => new FoodIntake{ Food = fp, AmountG = f.AmountG });
             var daily = new DailyFoodIntake(food);
-            var recommended = new DailyFoodIntake.Recommended(recommendedKcalIntake, request.Person.Gender, request.Person.Weight, request.Goal.MinProteinPerKg);
+            
+            var recommendedKcalIntake = _recommendedDailyKcalCalculator.CalculateRecommendedKcalIntake(request.Person, request.Goal);
+            var recommended = new DailyFoodIntake.Recommended
+            {
+                MaxSugar = _recommendedDailyIntakeCalculator.MaxSugar(request.Person.Gender),
+                MaxFat = _recommendedDailyIntakeCalculator.MaxFat(recommendedKcalIntake),
+                MaxCarbs = _recommendedDailyIntakeCalculator.MaxCarbs(recommendedKcalIntake),
+                MinProtein = _recommendedDailyIntakeCalculator.MinProtein(request.Person.Weight, 1.5f),
+                MaxKcal = recommendedKcalIntake
+            };
 
             return new DietComparison
            {
@@ -46,25 +59,11 @@ namespace NutritionAdvisor
 
         public class Recommended
         {
-            public float MaxSugar { get; }
-            public float MaxFat { get; }
-            public float MaxCarbs { get; }
-            public float MinProtein { get; }
-
-            public Recommended(float recommendedKcalIntake, Gender gender, float personWeight, float minProteinPerKg)
-            {
-                const float maxSugarMale = 38;
-                const float maxSugarFemale = 25;
-                MaxSugar = gender == Gender.Male ? maxSugarMale : maxSugarFemale;
-
-                const float maxFatOfTotalKcal = 0.25f;
-                MaxFat = recommendedKcalIntake * maxFatOfTotalKcal;
-
-                const float maxCarbsOfTotalKcal = 0.5f;
-                MaxCarbs = recommendedKcalIntake * maxCarbsOfTotalKcal;
-
-                MinProtein = personWeight * minProteinPerKg;
-            }
+            public float MaxSugar { get; set; }
+            public float MaxFat { get; set; }
+            public float MaxCarbs { get; set; }
+            public float MinProtein { get; set; }
+            public float MaxKcal { get; set; }
         }
     }
 
