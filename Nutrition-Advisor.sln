@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nutrition-Advisor", "src\Nutrition-Advisor\Nutrition-Advisor.csproj", "{0C78B619-57CC-4706-AB59-EE7E82BD0B80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutrition-Advisor.ConsoleApp", "src\Nutrition-Advisor.ConsoleApp\Nutrition-Advisor.ConsoleApp.csproj", "{A1724EDE-2D1F-4BDB-B961-A9103C16D243}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nutrition-Advisor.ConsoleApp", "src\Nutrition-Advisor.ConsoleApp\Nutrition-Advisor.ConsoleApp.csproj", "{A1724EDE-2D1F-4BDB-B961-A9103C16D243}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutrition-Advisor.Tests", "Nutrition-Advisor.Tests\Nutrition-Advisor.Tests.csproj", "{D986EF5E-AC85-4D7F-9B08-978CA7B4517B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A1724EDE-2D1F-4BDB-B961-A9103C16D243}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1724EDE-2D1F-4BDB-B961-A9103C16D243}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1724EDE-2D1F-4BDB-B961-A9103C16D243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D986EF5E-AC85-4D7F-9B08-978CA7B4517B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D986EF5E-AC85-4D7F-9B08-978CA7B4517B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D986EF5E-AC85-4D7F-9B08-978CA7B4517B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D986EF5E-AC85-4D7F-9B08-978CA7B4517B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
