@@ -1,3 +1,5 @@
+using NutritionAdvisor;
+
 namespace Nutrition_Advisor.Tests
 {
     public class RecommendedDailyIntakeCalculatorTests
@@ -9,66 +11,53 @@ namespace Nutrition_Advisor.Tests
             calculator = new RecommendedDailyIntakeCalculator();
         }
 
-        [Fact]
-        public void MaxFat_WhenRecommendedKcalIntakeIs1000_ShouldReturn250()
+        [Theory]
+        [InlineData(1000f, 250f)]
+        [InlineData(1500f, 375f)]
+        public void MaxFat_ShouldReturnExpected(float recommendedKcalIntake, float expected)
         {
-            // Arrange
-
-            var recommendedKcalIntake = 1000f;
-
             // Act
             var result = calculator.MaxFat(recommendedKcalIntake);
 
             // Assert
-            var expectedMaxFat = 250f;
-            Assert.Equal(expectedMaxFat, result);
+            Assert.Equal(expected, result);
         }
 
-        [Fact]
-        public void MaxFat_WhenRecommendedKcalIntakeIs1500_ShouldReturn375()
+        [Theory]
+        [InlineData(1000f, 500f)]
+        [InlineData(2000f, 1000f)]
+        public void MaxCarbs_ShouldReturnExpected(float recommendedKcalIntake, float expected)
         {
-            // Arrange
-            var calculator = new RecommendedDailyIntakeCalculator();
-            var recommendedKcalIntake = 1500f;
-            var expectedMaxFat = 375f;
-
-            // Act
-            var result = calculator.MaxFat(recommendedKcalIntake);
-
-            // Assert
-            Assert.Equal(expectedMaxFat, result);
-        }
-
-        [Fact]
-        public void MaxCarbs_WhenRecommendedKcalIntakeIs1000_ShouldReturn500()
-        {
-            // Arrange
-            var recommendedKcalIntake = 1000f;
-
             // Act
             var result = calculator.MaxCarbs(recommendedKcalIntake);
 
             // Assert
-            var expectedMaxCarbs = 500f;
-            Assert.Equal(expectedMaxCarbs, result);
+            Assert.Equal(expected, result);
         }
 
-        // Add more test cases as needed
-
-        // Unit test MinProtein
-        [Fact]
-        public void MinProtein_WhenPersonWeightIs100AndMinProteinPerKgIs1_ShouldReturn100()
+        [Theory]
+        [InlineData(100f, 1f, 100f)]
+        [InlineData(150f, 0.8f, 120f)]
+        public void MinProtein_ShouldReturnExpected(float personWeight, float minProteinPerKg, float expected)
         {
-            // Arrange
-            var personWeight = 100f;
-            var minProteinPerKg = 1f;
-
             // Act
             var result = calculator.MinProtein(personWeight, minProteinPerKg);
 
             // Assert
-            var expectedMinProtein = 100f;
-            Assert.Equal(expectedMinProtein, result);
+            Assert.Equal(expected, result);
+        }
+
+
+        [Theory]
+        [InlineData(Gender.Male, 38f)]
+        [InlineData(Gender.Female, 25f)]
+        public void MaxSugar_WhenGenderIsSpecified_ShouldReturnExpectedValue(Gender gender, float expected)
+        {
+            // Act
+            var result = calculator.MaxSugar(gender);
+
+            // Assert
+            Assert.Equal(expected, result);
         }
     }
 }

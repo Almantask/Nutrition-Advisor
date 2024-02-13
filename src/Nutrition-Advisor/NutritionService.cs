@@ -36,6 +36,7 @@ namespace NutritionAdvisor
         public async Task<NutritionResponse> GetNutritionResponse(NutritionRequest request)
         {
             var foodProductsWithNutritionValue = await _foodProductsProvider.GetFoodProductsAsync(request.Food.Select(f => f.Name));
+            // Categorise food products: healthy unhealthy
             var dietaryComparison = _foodEvaluator.CompareFoodConsumedToGoal(request, foodProductsWithNutritionValue.Values);
             
             var response = _responseBuilder.Build(request.Goal, dietaryComparison);
