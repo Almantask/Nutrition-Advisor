@@ -18,7 +18,9 @@ namespace NutritionAdvisor
             {
                 DietComparison = dietaryComparison,
                 Message = message,
-                RecommendedFood = goal.FoodRecommendations
+                RecommendedFood = goal.FoodRecommendations,
+                RecommendedKcalDailyIntake = dietaryComparison.Recommended.MaxKcal + goal.RecommendedKcalAdjustment,
+                CurrentKcalDailyIntake = dietaryComparison.Daily.Kcal
             };
         }
 
