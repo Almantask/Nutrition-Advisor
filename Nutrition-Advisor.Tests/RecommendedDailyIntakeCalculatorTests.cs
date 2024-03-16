@@ -1,6 +1,6 @@
 using NutritionAdvisor;
 
-namespace Nutrition_Advisor.Tests
+namespace NutritionAdvisor.Tests
 {
     public class RecommendedDailyIntakeCalculatorTests
     {

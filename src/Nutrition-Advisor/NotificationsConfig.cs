@@ -1,4 +1,4 @@
-﻿namespace Nutrition_Advisor
+﻿namespace NutritionAdvisor
 {
     public class NotificationsConfig
     {

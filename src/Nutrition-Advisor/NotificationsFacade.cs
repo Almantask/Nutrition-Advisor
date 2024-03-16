@@ -1,7 +1,7 @@
 ﻿using Polly;
 using System.Threading;
 
-namespace Nutrition_Advisor
+namespace NutritionAdvisor
 {
     public interface INotificationsFacade
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nutrition_Advisor.Tests.Dummy
+namespace NutritionAdvisor.Tests.Dummy
 {
     public static class DummyValueGenerator
     {

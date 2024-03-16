@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
-using Nutrition_Advisor;
-using static Nutrition_Advisor.Tests.Dummy.DummyValueGenerator;
+using NutritionAdvisor;
+using static NutritionAdvisor.Tests.Dummy.DummyValueGenerator;
 
 namespace NutritionAdvisor.Tests
 {
