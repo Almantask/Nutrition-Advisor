@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Nutrition_Advisor.Api.Tests
+namespace Nutrition_Advisor.Api.Tests.Smoke
 {
     public class SmokeTest
     {
@@ -8,12 +8,8 @@ namespace Nutrition_Advisor.Api.Tests
         [Fact]
         public async Task HealthEndpoint_ReturnsOk()
         {
-            // Arrange
-            var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7230/health");
-
             // Act
-            var response = await client.SendAsync(request);
+            var response = await TestHttpClient.Instance.GetAsync("health");
 
             // Assert
             response.EnsureSuccessStatusCode();
