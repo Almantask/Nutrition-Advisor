@@ -47,6 +47,10 @@
 
     public class DailyFoodIntake : FoodProperties
     {
+        public DailyFoodIntake()
+        {
+        }
+
         public DailyFoodIntake(IEnumerable<FoodIntake> foodConsumed)
         {
             Name = "Actually Consumed";
