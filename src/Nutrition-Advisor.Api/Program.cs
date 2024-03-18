@@ -22,7 +22,10 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+
+//builder.Services.AddSwaggerGen();
+
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
@@ -42,6 +45,18 @@ app.MapControllers();
 
 // Add health checks
 app.MapHealthChecks("/health");
+
+// middleware to log every request. Use an inject logger to do logging
+app.Use(async (context, next) =>
+{
+    // resolve logger from context
+    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+    // log request
+    logger.LogInformation($"{context.Request.Path}: sending");
+    await next.Invoke();
+    // log response with request path and status code
+    logger.LogInformation($"{context.Request.Path} completed: {context.Response.StatusCode}");
+});
 
 app.Run();
 

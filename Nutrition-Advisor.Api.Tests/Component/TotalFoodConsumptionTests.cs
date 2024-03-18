@@ -6,58 +6,20 @@ using Moq;
 using Newtonsoft.Json;
 using NutritionAdvisor;
 using System.Text;
+using static NutritionAdvisor.Tests.Api.Dummy.DummyValueGenerator;
 
 namespace Nutrition_Advisor.Api.Tests.Component
 {
     public class TotalFoodConsumptionTests : IClassFixture<WebApplicationFactory<Program>>
     {
-        private readonly WebApplicationFactory<Program> _factory;
+        private readonly HttpClient client;
+
+        private readonly Mock<IFoodApiAdapter> mockFoodApiAdapter;
 
         public TotalFoodConsumptionTests(WebApplicationFactory<Program> factory)
         {
-            _factory = factory;
-        }
-
-        [Fact]
-        public async Task DailyFoodIntake_When1Food_ReturnsThatFood()
-        {
-            // Arrange
-            var mockFoodApiAdapter = new Mock<IFoodApiAdapter>();
-            // Mock Get gyros GetFoodPropertyAsync
-            var requestedFood = new FoodProperties
-            {
-                Name = "Gyros",
-                Kcal = 470,
-                Protein = 20,
-                Carbohydrates = 25,
-                Fat = 30,
-                Sugar = 0
-            };
-            mockFoodApiAdapter
-                .Setup(f => f.GetFoodPropertyAsync(requestedFood.Name))
-                .ReturnsAsync(requestedFood);
-
-            // Arrange
-            var requestBody = @"{
-                              ""Goal"": {
-                                ""Name"": ""Become Fit""
-                              },
-                              ""Person"": {
-                                ""Gender"": ""Male"",
-                                ""Weight"": 85,
-                                ""Height"": 1.81,
-                                ""Age"": 29,
-                                ""ActivityLevel"": ""ModeratelyActive""
-                              },
-                              ""Food"": [
-                                {
-                                  ""Name"": ""Gyros"",
-                                  ""AmountG"": 200
-                                }
-                              ]
-                            }";
-
-            var client = _factory.WithWebHostBuilder(builder =>
+            mockFoodApiAdapter = new Mock<IFoodApiAdapter>();
+            client = factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureTestServices(services =>
                 {
@@ -65,29 +27,105 @@ namespace Nutrition_Advisor.Api.Tests.Component
                     services.AddScoped<IFoodApiAdapter>(_ => mockFoodApiAdapter.Object);
                 });
             }).CreateClient();
+        }
+
+        [Fact]
+        public async Task DailyFoodIntake_WhenSingleFood_ReturnsThatFood()
+        {
+            // Arrange
+            var requestedFood = SetupFoodReturned("Gyros");
+            var foodInRequest = new[] { new Food { Name = "Gyros", AmountG = 200 } };
+            var requestBody = BuildFoodRequest(foodInRequest);
 
             // Act
             var response = await client.PostAsync("/api/nutrition", new StringContent(requestBody, Encoding.UTF8, "application/json"));
 
             // Assert
-            // Read response as NutritionResponse
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var requestedFoods = new[] { requestedFood };
+            await AssertResponseEqualsExpectedFoodIntake(response, requestedFoods, foodInRequest);
+        }
 
+        [Fact]
+        public async Task DailyFoodIntake_WhenMultipleFoods_ReturnsSumOfTheirValues()
+        {
+            // Arrange
+            var requestedFood = SetupFoodReturned("Gyros");
+            var requestedFood2 = SetupFoodReturned("French Fries");
+            var foodInRequest = new[] { new Food { Name = "Gyros", AmountG = 200 }, new Food { Name = "French Fries", AmountG = 200 } };
+            var requestBody = BuildFoodRequest(foodInRequest);
 
-            var nutritionResponse = JsonConvert.DeserializeObject<NutritionResponse>(responseContent);
-            Assert.NotNull(nutritionResponse);
+            // Act
+            var response = await client.PostAsync("/api/nutrition", new StringContent(requestBody, Encoding.UTF8, "application/json"));
 
-            // TODO: update the chapter.
-            var expectedDailyFoodIntake = new DailyFoodIntake(new List<FoodIntake>
+            // Assert
+            var requestedFoods = new[] { requestedFood, requestedFood2 };
+            await AssertResponseEqualsExpectedFoodIntake(response, requestedFoods, foodInRequest);
+        }
+
+        [Fact]
+        public async Task DailyFoodIntake_WhenRecipe_ReturnsSumOfRecipeIngredients()
+        {
+            // Arrange
+            var requestedFood = SetupFoodReturned("Gyros");
+            var requestedFood2 = SetupFoodReturned("French Fries");
+            SetupRecipeReturned("Gyros with French Fries", "Gyros", "French Fries");
+            var foodInRequest = new[] { new Food { Name = "Gyros with French Fries", AmountG = 100 } };
+            var requestBody = BuildFoodRequest(new Food() { Name = "Gyros with French Fries", AmountG = 100 });
+
+            // Act
+            var response = await client.PostAsync("/api/nutrition", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+
+            // Assert
+            var requestedFoods = new[] { requestedFood, requestedFood2 };
+            await AssertResponseEqualsExpectedFoodIntake(response, requestedFoods, foodInRequest);
+        }
+
+        private string BuildFoodRequest(params Food[] foods)
+        {
+            var requestData = new NutritionRequest
             {
-                new FoodIntake
-                {
-                    Food = requestedFood,
-                    AmountG = 200
-                },
-            });
+                Goal = Goal.BecomeFit,
+                Person = Any<Person>(),
+                Food = foods
+            };
+
+            return JsonConvert.SerializeObject(requestData);
+        }
+
+        private FoodProperties SetupFoodReturned(string name)
+        {
+            var requestedFood = Any<FoodProperties>();
+            requestedFood.Name = name;
+            mockFoodApiAdapter
+                .Setup(f => f.GetFoodPropertyAsync(requestedFood.Name))
+                .ReturnsAsync(requestedFood);
+            return requestedFood;
+        }
+
+        private async Task AssertResponseEqualsExpectedFoodIntake(HttpResponseMessage response, FoodProperties[] foodProperties, Food[] foodInRequest)
+        {
+            response.EnsureSuccessStatusCode();
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var nutritionResponse = JsonConvert.DeserializeObject<NutritionResponse>(responseContent);
+
+            var ingredientsWithAmounts = foodInRequest.Zip(foodProperties, (fa, fp) => new FoodIntake() { Food = fp, AmountG = fa.AmountG });
+            var expectedDailyFoodIntake = new DailyFoodIntake(ingredientsWithAmounts);
 
             expectedDailyFoodIntake.Should().BeEquivalentTo(nutritionResponse.DietComparison.Daily);
+        }
+
+        private Recipe SetupRecipeReturned(string recipeName, params string[] ingredients)
+        {
+            var recipe = new Recipe
+            {
+                Name = recipeName,
+                Ingredients = ingredients.Select(i => new Food { Name = i, AmountG = 100 })
+            };
+            mockFoodApiAdapter
+                .Setup(f => f.GetRecipeAsync(recipeName))
+                .ReturnsAsync(recipe);
+
+            return recipe;
         }
     }
 }

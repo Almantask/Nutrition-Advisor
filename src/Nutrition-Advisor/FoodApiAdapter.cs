@@ -2,7 +2,7 @@
 {
         public interface IFoodApiAdapter
     {
-        Task<Recipe> GetRecipe(string foodItem);
+        Task<Recipe> GetRecipeAsync(string foodItem);
         Task<IEnumerable<string>> GetIngredientsAsync(string compositeFood);
         Task<FoodProperties> GetFoodPropertyAsync(string foodItem);
     }
@@ -18,7 +18,18 @@
             // Initialize with some dummy data
             recipeDatabase = new Dictionary<string, Recipe>
             {
-                { "Smoothie", new Recipe { Name = "Smoothie", Ingredients = new List<string> { "Apple", "Banana" } } },
+                // TODO
+                {
+                    "Smoothie",
+                    new Recipe
+                    { Name = "Smoothie",
+                        Ingredients = new Food[]
+                        {
+                            new() { Name = "Apple", AmountG = 100 },
+                            new() { Name = "Banana", AmountG = 150 }
+                        }
+                    }
+                }
                 // Add more recipes as needed
             };
 
@@ -54,7 +65,7 @@
             };
         }
 
-        public Task<Recipe> GetRecipe(string foodItem)
+        public Task<Recipe> GetRecipeAsync(string foodItem)
         {
             // Placeholder implementation, you should replace this with actual logic
             if (recipeDatabase.TryGetValue(foodItem, out var recipe))
@@ -72,7 +83,8 @@
             // Placeholder implementation, you should replace this with actual logic
             if (recipeDatabase.TryGetValue(compositeFood, out var recipe))
             {
-                return Task.FromResult<IEnumerable<string>>(recipe.Ingredients);
+                // TODO
+                return Task.FromResult<IEnumerable<string>>(recipe.Ingredients.Select(i => i.Name));
             }
             else
             {

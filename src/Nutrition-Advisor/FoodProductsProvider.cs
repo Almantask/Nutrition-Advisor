@@ -35,7 +35,7 @@ namespace NutritionAdvisor
                 }
 
                 // If not in the cache, check if it's a composite food
-                var recipe = await foodApiAdapter.GetRecipe(foodItem);
+                var recipe = await foodApiAdapter.GetRecipeAsync(foodItem);
                 foodProperty = await GetFoodProperties(recipe, foodItem);
                 cache.TryAdd(foodItem, foodProperty);
 
@@ -46,18 +46,22 @@ namespace NutritionAdvisor
             return results.ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
-        private FoodProperties CalculateCompositeFoodProperties(IEnumerable<FoodProperties> ingredients)
+        private FoodProperties CalculateCompositeFoodProperties(IEnumerable<FoodProperties> ingredients, IEnumerable<Food> foodAmounts)
         {
+            // Group food properties to amounts
+            var ingredientsWithAmounts = ingredients.Zip(foodAmounts, (i, a) => new { FoodProperties = i, Amount = a.AmountG });
+
             // Calculate the sum of individual ingredients
             var sumProperties = new FoodProperties();
 
-            foreach (var ingredient in ingredients)
+            foreach (var ingredient in ingredientsWithAmounts)
             {
-
-                sumProperties.Kcal += ingredient.Kcal;
-                sumProperties.Protein += ingredient.Protein;
-                sumProperties.Carbohydrates += ingredient.Carbohydrates;
-                sumProperties.Fat += ingredient.Fat;
+                sumProperties.Kcal += ingredient.FoodProperties.Kcal * ingredient.Amount / 100;
+                sumProperties.Protein += ingredient.FoodProperties.Protein * ingredient.Amount / 100;
+                sumProperties.Carbohydrates += ingredient.FoodProperties.Carbohydrates * ingredient.Amount / 100;
+                sumProperties.Fat += ingredient.FoodProperties.Fat * ingredient.Amount / 100;
+                // TODO
+                sumProperties.Sugar += ingredient.FoodProperties.Sugar * ingredient.Amount / 100;
             }
 
             return sumProperties;
@@ -86,10 +90,13 @@ namespace NutritionAdvisor
             return foodProperty;
         }
 
+        // TODO: need to take in consideration the amount for the recipe itself...
         private async Task<FoodProperties> GetFoodPropertiesFor(Recipe recipe)
         {
-            var recipeIngredientFoodProperties = await GetFoodProductsAsync(recipe.Ingredients);
-            var compositeFoodProperties = CalculateCompositeFoodProperties(recipeIngredientFoodProperties.Values);
+            var recipeIngredientFoodProperties = await GetFoodProductsAsync(recipe.Ingredients.Select(i => i.Name));
+            // TODO
+            
+            var compositeFoodProperties = CalculateCompositeFoodProperties(recipeIngredientFoodProperties.Values, recipe.Ingredients);
             compositeFoodProperties.Name = recipe.Name;
 
             return compositeFoodProperties;

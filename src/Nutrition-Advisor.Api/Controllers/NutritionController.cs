@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using NutritionAdvisor;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace NutritionAdvisor.Api.Controllers
 {
@@ -15,6 +13,7 @@ namespace NutritionAdvisor.Api.Controllers
             _nutritionService = nutritionService;
         }
 
+        // Provide an example of a NutritionRequest using Swashbuckle
         [HttpPost]
         public async Task<ActionResult<NutritionResponse>> GetNutritionResponse(NutritionRequest request)
         {

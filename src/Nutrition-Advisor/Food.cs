@@ -1,8 +1,12 @@
-﻿namespace NutritionAdvisor
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace NutritionAdvisor
 {
     public class Food
     {
-        public string Name { get; set; }
+        [MinLength(1)]
+        public string? Name { get; set; }
+        [Range(0.01, 1000)]
         public float AmountG { get; set; }
     }
 }
