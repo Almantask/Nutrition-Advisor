@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace NutritionAdvisor.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [Route("api/v{version:apiVersion}/nutrition")]
     [ApiController]
-    public class NutritionController : ControllerBase
+    public class NutritionControllerV1 : ControllerBase
     {
-        private readonly INutritionService _nutritionService;
+        private readonly INutritionServiceV1 _nutritionService;
 
-        public NutritionController(INutritionService nutritionService)
+        public NutritionControllerV1(INutritionServiceV1 nutritionService)
         {
             _nutritionService = nutritionService;
         }

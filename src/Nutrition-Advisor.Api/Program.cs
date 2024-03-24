@@ -1,9 +1,14 @@
+using Asp.Versioning;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using NutritionAdvisor;
+using NutritionAdvisor.Api.Controllers;
+using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<INutritionService, NutritionService>();
 builder.Services.AddScoped<INutritionResponseBuilder, NutritionResponseBuilder>();
 builder.Services.AddScoped<INotificationsFacade, NotificationsFacade>();
 builder.Services.AddScoped<NotificationsConfig>();
@@ -18,13 +23,57 @@ builder.Services.AddScoped<IFoodApiAdapter, FoodApiAdapter>();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new GoalConverter());
-}); ;
+});
+
+
+builder.Services.AddScoped<NutritionProcessor>();
+builder.Services.AddScoped<NutritionProcessorChatGpt>();
+
+// TODO describe.
+// Create NutritionControllerV1 with NutritionProcessor
+builder.Services.AddScoped<INutritionServiceV1, NutritionServiceV1>();
+builder.Services.AddScoped<INutritionServiceV2, NutritionServiceV2>();
+
+// Create NutritionControllerV2 with NutritionProcessorChatGpt
+builder.Services.AddScoped<INutritionService>(sp =>
+{
+    // Create NutrtionService with NutritionProcessorChatGpt
+    var nutritionService = new NutritionService(
+                      sp.GetRequiredService<ILogger<NutritionService>>(),
+                      sp.GetRequiredService<INotificationsFacade>(),
+                      sp.GetRequiredService<NotificationsConfig>(),
+                      sp.GetRequiredService<NutritionProcessorChatGpt>());
+    return nutritionService;
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+// Add api versioning with default version 1.0. For example baseUrl/v1.0/...
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+})
+    .AddMvc()
+    .AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
 
-//builder.Services.AddSwaggerGen();
+
+// Add swagger documentation
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Nutrition-Advisor.Api", Version = "v1" });
+    c.SwaggerDoc("v2", new OpenApiInfo { Title = "Nutrition-Advisor.Api", Version = "v2" });
+});
+
+builder.Services.AddSwaggerExamples();
+builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
 
 builder.Services.AddHealthChecks();
 
@@ -33,8 +82,14 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    // swagger middleware
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nutrition-Advisor.Api v1");
+        c.SwaggerEndpoint("/swagger/v2/swagger.json", "Nutrition-Advisor.Api v2");
+    });
+
 }
 
 app.UseHttpsRedirection();
@@ -60,4 +115,4 @@ app.Use(async (context, next) =>
 
 app.Run();
 
-public partial class Program {}
+public partial class Program { }

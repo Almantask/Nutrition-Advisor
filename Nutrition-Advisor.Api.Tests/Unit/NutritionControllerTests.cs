@@ -12,7 +12,7 @@ namespace NutritionAdvisor.Api.Tests
         {
             // Arrange
             var nutritionServiceMock = new Mock<INutritionService>();
-            var nutritionController = new NutritionController(nutritionServiceMock.Object);
+            var nutritionController = new NutritionControllerV1(nutritionServiceMock.Object);
             var nutritionRequest = new NutritionRequest();
 
             // Act
