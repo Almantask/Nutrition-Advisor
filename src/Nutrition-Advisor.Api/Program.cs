@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Nutrition_Advisor;
 using NutritionAdvisor;
 using NutritionAdvisor.Api.Controllers;
 using Swashbuckle.AspNetCore.Filters;
@@ -25,6 +26,17 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new GoalConverter());
 });
 
+var openApiKey = builder.Configuration["OpenAi:ApiKey"];
+if(string.IsNullOrEmpty(openApiKey))
+{
+    throw new InvalidOperationException("OpenAi:ApiKey is required");
+}
+
+builder.Services.AddOpenAi(settings =>
+{
+    settings.ApiKey = openApiKey;
+});
+
 
 builder.Services.AddScoped<NutritionProcessor>();
 builder.Services.AddScoped<NutritionProcessorChatGpt>();
@@ -33,18 +45,6 @@ builder.Services.AddScoped<NutritionProcessorChatGpt>();
 // Create NutritionControllerV1 with NutritionProcessor
 builder.Services.AddScoped<INutritionServiceV1, NutritionServiceV1>();
 builder.Services.AddScoped<INutritionServiceV2, NutritionServiceV2>();
-
-// Create NutritionControllerV2 with NutritionProcessorChatGpt
-builder.Services.AddScoped<INutritionService>(sp =>
-{
-    // Create NutrtionService with NutritionProcessorChatGpt
-    var nutritionService = new NutritionService(
-                      sp.GetRequiredService<ILogger<NutritionService>>(),
-                      sp.GetRequiredService<INotificationsFacade>(),
-                      sp.GetRequiredService<NotificationsConfig>(),
-                      sp.GetRequiredService<NutritionProcessorChatGpt>());
-    return nutritionService;
-});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

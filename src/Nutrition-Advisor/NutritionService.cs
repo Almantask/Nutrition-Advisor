@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Nutrition_Advisor;
 using NutritionAdvisor;
 
 namespace NutritionAdvisor
@@ -27,47 +28,6 @@ namespace NutritionAdvisor
             NutritionProcessorChatGpt processor)
             : base(logger, notifier, config, processor)
         {
-        }
-    }
-
-    public class NutritionProcessorChatGpt: INutritionProcessor
-    {
-
-        public async Task<NutritionResponse> Process(NutritionRequest request)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public interface INutritionProcessor
-    {
-        Task<NutritionResponse> Process(NutritionRequest request);
-    }
-
-    public class NutritionProcessor : INutritionProcessor
-    {
-        private readonly IFoodProductsProvider _foodProductsProvider;
-        private readonly INutritionResponseBuilder _responseBuilder;
-        private readonly IFoodEvaluator _foodEvaluator;
-
-        public NutritionProcessor(
-            IFoodProductsProvider foodProductsProvider,
-            INutritionResponseBuilder responseBuilder,
-            IFoodEvaluator foodEvaluator)
-        {
-            _foodProductsProvider = foodProductsProvider;
-            _responseBuilder = responseBuilder;
-            _foodEvaluator = foodEvaluator;
-        }
-
-        public async Task<NutritionResponse> Process(NutritionRequest request)
-        {
-            var foodProductsWithNutritionValue = await _foodProductsProvider.GetFoodProductsAsync(request.Food.Select(f => f.Name));
-            // Categorise food products: healthy unhealthy
-            var dietaryComparison = _foodEvaluator.CompareFoodConsumedToGoal(request, foodProductsWithNutritionValue.Values);
-
-            var response = _responseBuilder.Build(request.Goal, dietaryComparison);
-            return response;
         }
     }
 
