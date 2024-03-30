@@ -33,7 +33,7 @@ namespace Nutrition_Advisor
             return resposne;
         }
 
-    private string ConstructSystemPrompt()
+        private string ConstructSystemPrompt()
         {
             var apiSchema = File.ReadAllText(@"Resources/swagger.json");
             var exampleJson = File.ReadAllText(@"Resources/Example1.json");
@@ -46,30 +46,30 @@ namespace Nutrition_Advisor
             return prompt;
         }
 
-    private string ConstructUserPrompt(NutritionRequest request)
-    {
-        var requestJson = JsonConvert.SerializeObject(request, Formatting.Indented);
+        private string ConstructUserPrompt(NutritionRequest request)
+        {
+            var requestJson = JsonConvert.SerializeObject(request, Formatting.Indented);
 
-        var messageWithRequestBody = $"I have this request:{NewLine}```json{requestJson}{NewLine}```";
+            var messageWithRequestBody = $"I have this request:{NewLine}```json{requestJson}{NewLine}```";
 
-        var messageWithResponseSpecification =
-            "For dietComparison.daily calculate the total kcal, carbs, protein, fat and sugar consumed." +
-            "For dietComparison.recommended calculate the recommendations based on person and their goal. Min and max values accordingly for each food property." +
-            "For recommendedFood pick the best food based on person and their goal. " +
-            "For message, give a tip for the person based on their goal. " +
-            "Use -1 for numbers if not found";
+            var messageWithResponseSpecification =
+                "For dietComparison.daily calculate the total kcal, carbs, protein, fat and sugar consumed." +
+                "For dietComparison.recommended calculate the recommendations based on person and their goal. Min and max values accordingly for each food property." +
+                "For recommendedFood pick the best food based on person and their goal. " +
+                "For message, give a tip for the person based on their goal. " +
+                "Use -1 for numbers if not found";
 
-        var prompt = $"{NewLine}{messageWithRequestBody}{NewLine}{NewLine}{messageWithResponseSpecification}";
+            var prompt = $"{NewLine}{messageWithRequestBody}{NewLine}{NewLine}{messageWithResponseSpecification}";
 
-        return prompt;
+            return prompt;
+        }
+
+        private NutritionResponse ProcessChatResponse(ChatResult result)
+        {
+            var firstResult = result.Choices.First();
+            var resposne = JsonConvert.DeserializeObject<NutritionResponse>(firstResult.Message.Content);
+            return resposne;
+        }
     }
-
-    private NutritionResponse ProcessChatResponse(ChatResult result)
-    {
-        var firstResult = result.Choices.First();
-        var resposne = JsonConvert.DeserializeObject<NutritionResponse>(firstResult.Message.Content);
-        return resposne;
-    }
-}
 
 }
