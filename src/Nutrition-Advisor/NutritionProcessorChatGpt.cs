@@ -39,7 +39,7 @@ namespace Nutrition_Advisor
             var exampleJson = File.ReadAllText(@"Resources/Example1.json");
             var prompt =
                 $"- You are a RESTful web API which implements the following API schema:{NewLine}" +
-                $"```json{NewLine}{apiSchema}{NewLine}```{NewLine}" +
+                $"{NewLine}{apiSchema}{NewLine}{NewLine}" +
                 $"- Example response:{NewLine}{exampleJson}{NewLine}" +
                 $"- Response should be in JSON without the formatting tags. There should be no clarifying statements neither before or after the response.";
 
@@ -50,7 +50,7 @@ namespace Nutrition_Advisor
         {
             var requestJson = JsonConvert.SerializeObject(request, Formatting.Indented);
 
-            var messageWithRequestBody = $"I have this request:{NewLine}```json{requestJson}{NewLine}```";
+            var messageWithRequestBody = $"I have this request:{NewLine}{requestJson}{NewLine}";
 
             var messageWithResponseSpecification =
                 "For dietComparison.daily calculate the total kcal, carbs, protein, fat and sugar consumed." +
