@@ -11,7 +11,7 @@ namespace NutritionAdvisor.Api.Tests
         public async Task GetNutritionResponse_ReturnsOkObjectResult()
         {
             // Arrange
-            var nutritionServiceMock = new Mock<INutritionService>();
+            var nutritionServiceMock = new Mock<INutritionServiceV1>();
             var nutritionController = new NutritionControllerV1(nutritionServiceMock.Object);
             var nutritionRequest = new NutritionRequest();
 

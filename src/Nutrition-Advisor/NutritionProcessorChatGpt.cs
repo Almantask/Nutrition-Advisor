@@ -1,5 +1,4 @@
-﻿using Microsoft.Identity.Client;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NutritionAdvisor;
 using Rystem.OpenAi;
 using Rystem.OpenAi.Chat;

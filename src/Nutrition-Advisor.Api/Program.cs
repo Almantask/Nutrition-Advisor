@@ -1,81 +1,8 @@
-using Asp.Versioning;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
-using Nutrition_Advisor;
-using NutritionAdvisor;
-using NutritionAdvisor.Api.Controllers;
-using Swashbuckle.AspNetCore.Filters;
-using System.Reflection;
+using Nutrition_Advisor.Api.Bootstrap;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddScoped<INutritionResponseBuilder, NutritionResponseBuilder>();
-builder.Services.AddScoped<INotificationsFacade, NotificationsFacade>();
-builder.Services.AddScoped<NotificationsConfig>();
-builder.Services.AddScoped<IFoodProductsProvider, FoodProductsProvider>();
-builder.Services.AddScoped<IFoodEvaluator, FoodEvaluator>();
-builder.Services.AddScoped<IRecommendedDailyIntakeCalculator, RecommendedDailyIntakeCalculator>();
-builder.Services.AddScoped<IRecommendedKcalCalculator, RecommendedKcalCalculator>();
-builder.Services.AddScoped<IEmailAdapter, EmailAPIAdapter>();
-builder.Services.AddScoped<ISmsAdapter, SmsAPIAdapter>();
-builder.Services.AddScoped<IFoodApiAdapter, FoodApiAdapter>();
-
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new GoalConverter());
-});
-
-var openApiKey = builder.Configuration["OpenAi:ApiKey"];
-if(string.IsNullOrEmpty(openApiKey))
-{
-    throw new InvalidOperationException("OpenAi:ApiKey is required");
-}
-
-builder.Services.AddOpenAi(settings =>
-{
-    settings.ApiKey = openApiKey;
-});
-
-
-builder.Services.AddScoped<NutritionProcessor>();
-builder.Services.AddScoped<NutritionProcessorChatGpt>();
-
-// TODO describe.
-// Create NutritionControllerV1 with NutritionProcessor
-builder.Services.AddScoped<INutritionServiceV1, NutritionServiceV1>();
-builder.Services.AddScoped<INutritionServiceV2, NutritionServiceV2>();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-
-// Add api versioning with default version 1.0. For example baseUrl/v1.0/...
-builder.Services.AddApiVersioning(options =>
-{
-    options.DefaultApiVersion = new ApiVersion(1, 0);
-    options.AssumeDefaultVersionWhenUnspecified = true;
-    options.ReportApiVersions = true;
-    options.ApiVersionReader = new UrlSegmentApiVersionReader();
-})
-    .AddMvc()
-    .AddApiExplorer(options =>
-{
-    options.GroupNameFormat = "'v'VVV";
-    options.SubstituteApiVersionInUrl = true;
-});
-
-
-// Add swagger documentation
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Nutrition-Advisor.Api", Version = "v1" });
-    c.SwaggerDoc("v2", new OpenApiInfo { Title = "Nutrition-Advisor.Api", Version = "v2" });
-});
-
-builder.Services.AddSwaggerExamples();
-builder.Services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
-
-builder.Services.AddHealthChecks();
+ServicesSetup.AddServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 
