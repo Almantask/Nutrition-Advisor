@@ -1,6 +1,7 @@
 // Unit test for NutritionController
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Nutrition_Advisor.UseCases.Nutrition;
 using NutritionAdvisor.Api.Controllers;
 
 namespace NutritionAdvisor.Api.Tests

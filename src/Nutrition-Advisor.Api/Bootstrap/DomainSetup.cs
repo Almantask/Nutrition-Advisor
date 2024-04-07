@@ -1,4 +1,11 @@
-﻿using NutritionAdvisor;
+﻿using Nutrition_Advisor.Domain.Food;
+using Nutrition_Advisor.Domain.Intake;
+using Nutrition_Advisor.Domain.Notification;
+using Nutrition_Advisor.Infrastructure.Food;
+using Nutrition_Advisor.Infrastructure.Notificaitons;
+using Nutrition_Advisor.Infrastructure.Notificaitons.Email;
+using Nutrition_Advisor.Infrastructure.Notificaitons.Sms;
+using Nutrition_Advisor.UseCases.Nutrition;
 
 namespace Nutrition_Advisor.Api.Bootstrap
 {

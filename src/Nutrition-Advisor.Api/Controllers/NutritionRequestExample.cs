@@ -1,4 +1,8 @@
-﻿using Swashbuckle.AspNetCore.Filters;
+﻿using Nutrition_Advisor.Domain.Food;
+using Nutrition_Advisor.Domain.Intake;
+using Nutrition_Advisor.Domain.Person;
+using Nutrition_Advisor.UseCases.Nutrition;
+using Swashbuckle.AspNetCore.Filters;
 namespace NutritionAdvisor.Api.Controllers
 {
     public class NutritionRequestExample : IExamplesProvider<NutritionRequest>

@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using NutritionAdvisor;
+using Nutrition_Advisor.Domain.Person;
 using System;
 using System.Collections.Generic;
 using System.Linq;

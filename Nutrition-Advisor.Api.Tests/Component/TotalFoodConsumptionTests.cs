@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Newtonsoft.Json;
-using NutritionAdvisor;
+using Nutrition_Advisor.Domain;
+using Nutrition_Advisor.Domain.Food;
+using Nutrition_Advisor.Domain.Person;
 using System.Text;
 using static NutritionAdvisor.Tests.Api.Dummy.DummyValueGenerator;
 

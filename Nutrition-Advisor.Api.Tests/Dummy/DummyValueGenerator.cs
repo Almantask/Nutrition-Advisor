@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using Nutrition_Advisor.Domain.Person;
 
 namespace NutritionAdvisor.Tests.Api.Dummy
 {

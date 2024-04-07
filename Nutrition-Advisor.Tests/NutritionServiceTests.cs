@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
-using NutritionAdvisor;
+using Nutrition_Advisor.Domain.Food;
+using Nutrition_Advisor.Domain.Intake;
+using Nutrition_Advisor.Domain.Notification;
+using Nutrition_Advisor.Domain.Person;
+using Nutrition_Advisor.UseCases.Nutrition;
 using static NutritionAdvisor.Tests.Dummy.DummyValueGenerator;
 
 namespace NutritionAdvisor.Tests

@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Nutrition_Advisor.UseCases.Nutrition;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace NutritionAdvisor.Api.Controllers

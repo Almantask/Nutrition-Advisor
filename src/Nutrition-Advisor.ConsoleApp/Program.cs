@@ -1,7 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NutritionAdvisor;
-using NutritionAdvisor;
+using Nutrition_Advisor.Domain.Food;
+using Nutrition_Advisor.Domain.Intake;
+using Nutrition_Advisor.Domain.Notification;
+using Nutrition_Advisor.Domain.Person;
+using Nutrition_Advisor.Infrastructure.Food;
+using Nutrition_Advisor.Infrastructure.Notificaitons;
+using Nutrition_Advisor.Infrastructure.Notificaitons.Email;
+using Nutrition_Advisor.Infrastructure.Notificaitons.Sms;
+using Nutrition_Advisor.UseCases.Nutrition;
 using Serilog;
 
 var person = new Person()
