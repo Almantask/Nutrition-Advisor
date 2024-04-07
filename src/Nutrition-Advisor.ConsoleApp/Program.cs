@@ -5,9 +5,9 @@ using Nutrition_Advisor.Domain.Intake;
 using Nutrition_Advisor.Domain.Notification;
 using Nutrition_Advisor.Domain.Person;
 using Nutrition_Advisor.Infrastructure.Food;
-using Nutrition_Advisor.Infrastructure.Notificaitons;
 using Nutrition_Advisor.Infrastructure.Notificaitons.Email;
 using Nutrition_Advisor.Infrastructure.Notificaitons.Sms;
+using Nutrition_Advisor.UseCases.Notification;
 using Nutrition_Advisor.UseCases.Nutrition;
 using Serilog;
 

@@ -3,8 +3,13 @@ using Nutrition_Advisor.Infrastructure.Notificaitons.Email;
 using Nutrition_Advisor.Infrastructure.Notificaitons.Sms;
 using Polly;
 
-namespace Nutrition_Advisor.Infrastructure.Notificaitons
+namespace Nutrition_Advisor.UseCases.Notification
 {
+    public interface INotificationsFacade
+    {
+        ValueTask SendEmailNotificationAsync(string body, string recipient);
+        ValueTask SendSmsNotificationAsync(string body, string recipient);
+    }
 
     public class NotificationsFacade : INotificationsFacade
     {

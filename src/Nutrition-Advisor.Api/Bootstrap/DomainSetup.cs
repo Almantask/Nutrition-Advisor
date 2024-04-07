@@ -2,9 +2,10 @@
 using Nutrition_Advisor.Domain.Intake;
 using Nutrition_Advisor.Domain.Notification;
 using Nutrition_Advisor.Infrastructure.Food;
-using Nutrition_Advisor.Infrastructure.Notificaitons;
+using Nutrition_Advisor.Infrastructure.Gpt;
 using Nutrition_Advisor.Infrastructure.Notificaitons.Email;
 using Nutrition_Advisor.Infrastructure.Notificaitons.Sms;
+using Nutrition_Advisor.UseCases.Notification;
 using Nutrition_Advisor.UseCases.Nutrition;
 
 namespace Nutrition_Advisor.Api.Bootstrap
@@ -23,8 +24,8 @@ namespace Nutrition_Advisor.Api.Bootstrap
             services.AddScoped<IEmailAdapter, EmailAPIAdapter>();
             services.AddScoped<ISmsAdapter, SmsAPIAdapter>();
             services.AddScoped<IFoodApiAdapter, FoodApiAdapter>();
-            services.AddScoped<NutritionProcessor>();
-            services.AddScoped<NutritionProcessorChatGpt>();
+            services.AddScoped<INutritionProcessorCustom, NutritionProcessor>();
+            services.AddScoped<INutritionProcessorGpt, NutritionProcessorChatGpt>();
             services.AddScoped<INutritionServiceV1, NutritionServiceV1>();
             services.AddScoped<INutritionServiceV2, NutritionServiceV2>();
 

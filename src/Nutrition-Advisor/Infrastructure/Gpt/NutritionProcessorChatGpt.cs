@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Nutrition_Advisor.UseCases.Nutrition;
 using Rystem.OpenAi;
 using Rystem.OpenAi.Chat;
 using static System.Environment;
 
-namespace Nutrition_Advisor.UseCases.Nutrition
+namespace Nutrition_Advisor.Infrastructure.Gpt
 {
-    public class NutritionProcessorChatGpt : INutritionProcessor
+    public class NutritionProcessorChatGpt : INutritionProcessorGpt
     {
         private readonly IOpenAiFactory _openAiFactory;
 

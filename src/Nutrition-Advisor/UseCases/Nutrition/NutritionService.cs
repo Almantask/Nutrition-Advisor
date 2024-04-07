@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Nutrition_Advisor.Domain.Notification;
+using Nutrition_Advisor.UseCases.Notification;
 
 namespace Nutrition_Advisor.UseCases.Nutrition
 {

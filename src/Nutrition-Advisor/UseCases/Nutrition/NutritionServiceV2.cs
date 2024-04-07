@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Nutrition_Advisor.Domain.Notification;
+using Nutrition_Advisor.UseCases.Notification;
 
 namespace Nutrition_Advisor.UseCases.Nutrition
 {
@@ -11,7 +12,7 @@ namespace Nutrition_Advisor.UseCases.Nutrition
             ILogger<NutritionService> logger,
             INotificationsFacade notifier,
             NotificationsConfig config,
-            NutritionProcessorChatGpt processor)
+            INutritionProcessorGpt processor)
             : base(logger, notifier, config, processor)
         {
         }
