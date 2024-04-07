@@ -1,13 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using NutritionAdvisor.Domain.FoodUnevaluated;
-using NutritionAdvisor.Domain.Persona;
 
-namespace NutritionAdvisor.Domain.FoodEvaluated
+namespace NutritionAdvisor.Api.Dtos
 {
     public class NutritionRequest
     {
-        public Goal Goal { get; set; }
+        [Required]
+        public string Goal { get; set; }
+        [Required]
         public Person Person { get; set; }
+        [Required]
+        [MinLength(1)]
         public IEnumerable<Food> Food { get; set; }
     }
 }
