@@ -1,35 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Nutrition_Advisor.Api.Tests</RootNamespace>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>NutritionAdvisor.Tests</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <UserSecretsId>7c37f893-1104-4465-aed8-fced9654d74c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.18.1" />
-    <PackageReference Include="FluentAssertions" Version="6.12.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.28" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="Moq" Version="4.20.70" />
-    <PackageReference Include="Polly" Version="8.3.1" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -42,7 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Nutrition-Advisor.Api\Nutrition-Advisor.Api.csproj" />
+    <ProjectReference Include="..\src\NutritionAdvisor.Domain\NutritionAdvisor.Domain.csproj" />
+    <ProjectReference Include="..\src\NutritionAdvisor.Infrastructure\NutritionAdvisor.Infrastructure.csproj" />
+    <ProjectReference Include="..\src\NutritionAdvisor.UseCases\NutritionAdvisor.UseCases.csproj" />
   </ItemGroup>
 
 </Project>

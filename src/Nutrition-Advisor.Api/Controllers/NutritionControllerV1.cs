@@ -1,7 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using Nutrition_Advisor.UseCases.Nutrition;
-using Swashbuckle.AspNetCore.Filters;
+using NutritionAdvisor.Domain.FoodEvaluated;
+using NutritionAdvisor.UseCases.Nutrition;
 
 namespace NutritionAdvisor.Api.Controllers
 {

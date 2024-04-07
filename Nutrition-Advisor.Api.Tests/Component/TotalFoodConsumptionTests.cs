@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Newtonsoft.Json;
-using Nutrition_Advisor.Domain;
-using Nutrition_Advisor.Domain.Food;
-using Nutrition_Advisor.Domain.Person;
+using NutritionAdvisor.Domain.FoodEvaluated;
+using NutritionAdvisor.Domain.FoodUnevaluated;
+using NutritionAdvisor.Domain.Persona;
 using System.Text;
 using static NutritionAdvisor.Tests.Api.Dummy.DummyValueGenerator;
 
-namespace Nutrition_Advisor.Api.Tests.Component
+namespace NutritionAdvisor.Api.Tests.Component
 {
     public class TotalFoodConsumptionTests : IClassFixture<WebApplicationFactory<Program>>
     {

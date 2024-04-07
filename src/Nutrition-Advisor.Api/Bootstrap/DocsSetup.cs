@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 
-namespace Nutrition_Advisor.Api.Bootstrap
+namespace NutritionAdvisor.Api.Bootstrap
 {
     public static class DocsSetup
     {

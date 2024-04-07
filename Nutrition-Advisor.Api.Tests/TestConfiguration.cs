@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nutrition_Advisor.Api.Tests
+namespace NutritionAdvisor.Api.Tests
 {
     public static class TestConfiguration
     {

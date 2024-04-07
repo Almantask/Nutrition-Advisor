@@ -1,8 +1,8 @@
-// Unit test for NutritionController
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Nutrition_Advisor.UseCases.Nutrition;
+using NutritionAdvisor.UseCases.Nutrition;
 using NutritionAdvisor.Api.Controllers;
+using NutritionAdvisor.Domain.FoodEvaluated;
 
 namespace NutritionAdvisor.Api.Tests
 {
@@ -21,7 +21,6 @@ namespace NutritionAdvisor.Api.Tests
 
             // Assert
             Assert.IsType<OkObjectResult>(result.Result);
-            // verify that nutritionServiceMock was called
             nutritionServiceMock.Verify(x => x.GetNutritionResponse(nutritionRequest), Times.Once);
         }
     }

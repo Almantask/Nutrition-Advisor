@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Nutrition_Advisor.Api": {
+    "NutritionAdvisor.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

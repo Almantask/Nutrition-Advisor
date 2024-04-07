@@ -1,10 +1,5 @@
 ﻿using AutoFixture;
-using Nutrition_Advisor.Domain.Person;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NutritionAdvisor.Domain.Persona;
 
 namespace NutritionAdvisor.Tests.Dummy
 {

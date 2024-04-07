@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Nutrition_Advisor.Api.Bootstrap;
+using NutritionAdvisor.Api.Bootstrap;
 using Rystem.OpenAi;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nutrition_Advisor.Api.Tests.Integration
+namespace NutritionAdvisor.Api.Tests.Integration
 {
     public class OpenAiIntegrationTest
     {

@@ -1,6 +1,6 @@
 ﻿using Polly;
 
-namespace Nutrition_Advisor.Api.Tests
+namespace NutritionAdvisor.Api.Tests
 {
     public class TestHttpClient
     {

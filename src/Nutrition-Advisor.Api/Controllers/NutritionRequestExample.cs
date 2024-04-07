@@ -1,7 +1,6 @@
-﻿using Nutrition_Advisor.Domain.Food;
-using Nutrition_Advisor.Domain.Intake;
-using Nutrition_Advisor.Domain.Person;
-using Nutrition_Advisor.UseCases.Nutrition;
+﻿using NutritionAdvisor.Domain.FoodEvaluated;
+using NutritionAdvisor.Domain.FoodUnevaluated;
+using NutritionAdvisor.Domain.Persona;
 using Swashbuckle.AspNetCore.Filters;
 namespace NutritionAdvisor.Api.Controllers
 {

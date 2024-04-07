@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Nutrition_Advisor.Api.Tests.Smoke
+namespace NutritionAdvisor.Api.Tests.Smoke
 {
     public class SmokeTest
     {

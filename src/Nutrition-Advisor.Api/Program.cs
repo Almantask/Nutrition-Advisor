@@ -1,4 +1,4 @@
-using Nutrition_Advisor.Api.Bootstrap;
+using NutritionAdvisor.Api.Bootstrap;
 
 var builder = WebApplication.CreateBuilder(args);
 

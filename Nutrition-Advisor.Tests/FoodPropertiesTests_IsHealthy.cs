@@ -1,4 +1,4 @@
-﻿using Nutrition_Advisor.Domain.Food;
+﻿using NutritionAdvisor.Domain.FoodUnevaluated;
 
 namespace NutritionAdvisor.Tests
 {

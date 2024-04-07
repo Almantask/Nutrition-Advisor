@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
+﻿using NutritionAdvisor.Domain.Persona;
+using System.Text.Json;
 using System.Text.Json.Serialization;
-using Nutrition_Advisor.Domain.Person;
 
-namespace NutritionAdvisor
+namespace NutritionAdvisor.Api
 {
     public class GoalConverter : JsonConverter<Goal>
     {

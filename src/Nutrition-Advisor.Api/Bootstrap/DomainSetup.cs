@@ -1,14 +1,14 @@
-﻿using Nutrition_Advisor.Domain.Food;
-using Nutrition_Advisor.Domain.Intake;
-using Nutrition_Advisor.Domain.Notification;
-using Nutrition_Advisor.Infrastructure.Food;
-using Nutrition_Advisor.Infrastructure.Gpt;
-using Nutrition_Advisor.Infrastructure.Notificaitons.Email;
-using Nutrition_Advisor.Infrastructure.Notificaitons.Sms;
-using Nutrition_Advisor.UseCases.Notification;
-using Nutrition_Advisor.UseCases.Nutrition;
+﻿using NutritionAdvisor.Domain.FoodEvaluated;
+using NutritionAdvisor.Domain.FoodUnevaluated;
+using NutritionAdvisor.Infrastructure.FoodApi;
+using NutritionAdvisor.Infrastructure.Gpt;
+using NutritionAdvisor.Infrastructure.Notificaitons;
+using NutritionAdvisor.Infrastructure.Notificaitons.EmailApi;
+using NutritionAdvisor.Infrastructure.Notificaitons.SmsApi;
+using NutritionAdvisor.UseCases.Notification;
+using NutritionAdvisor.UseCases.Nutrition;
 
-namespace Nutrition_Advisor.Api.Bootstrap
+namespace NutritionAdvisor.Api.Bootstrap
 {
     public static class DomainSetup
     {

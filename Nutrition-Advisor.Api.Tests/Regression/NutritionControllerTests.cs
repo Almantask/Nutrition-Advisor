@@ -6,10 +6,10 @@ using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Nutrition_Advisor.Api.Tests;
+using NutritionAdvisor.Api.Tests;
 using Xunit;
 
-namespace Nutrition_Advisor.Api.Tests.Regression
+namespace NutritionAdvisor.Api.Tests.Regression
 {
     public class RegressionTests
     {

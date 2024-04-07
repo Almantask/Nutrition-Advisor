@@ -1,4 +1,4 @@
-﻿namespace Nutrition_Advisor.Api.Bootstrap
+﻿namespace NutritionAdvisor.Api.Bootstrap
 {
     public class ServicesSetup
     {
