@@ -1,8 +1,8 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using NutritionAdvisor.Domain.FoodEvaluated;
+using NutritionAdvisor.Api.Dtos;
+using NutritionAdvisor.Api.Mappers;
 using NutritionAdvisor.UseCases.Nutrition;
-using Swashbuckle.AspNetCore.Filters;
 
 namespace NutritionAdvisor.Api.Controllers
 {
@@ -13,17 +13,20 @@ namespace NutritionAdvisor.Api.Controllers
     public class NutritionControllerV2 : ControllerBase
     {
         private readonly INutritionServiceV2 _nutritionService;
+        private readonly INutritionRequestMapper _mapper;
 
-        public NutritionControllerV2(INutritionServiceV2 nutritionService)
+        public NutritionControllerV2(INutritionServiceV2 nutritionService, INutritionRequestMapper mapper)
         {
             _nutritionService = nutritionService;
+            _mapper = mapper;
         }
 
         // Provide an example of a NutritionRequest using Swashbuckle
         [HttpPost]
         public async Task<ActionResult<NutritionResponse>> GetNutritionResponse(NutritionRequest request)
         {
-            var response = await _nutritionService.GetNutritionResponse(request);
+            var mappedRequest = _mapper.Map(request);
+            var response = await _nutritionService.GetNutritionResponse(mappedRequest);
             return Ok(response);
         }
     }

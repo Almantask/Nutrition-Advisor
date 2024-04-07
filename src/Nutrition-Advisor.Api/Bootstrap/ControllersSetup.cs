@@ -6,10 +6,7 @@ namespace NutritionAdvisor.Api.Bootstrap
     {
         public static IServiceCollection AddControllerServices(this IServiceCollection services)
         {
-            services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new GoalConverter());
-            });
+            services.AddControllers();
 
             return services;
         }

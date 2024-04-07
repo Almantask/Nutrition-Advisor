@@ -8,7 +8,7 @@ namespace NutritionAdvisor.Api.Mappers
         Internal.FoodEvaluated.NutritionRequest Map(External.NutritionRequest request);
     }
 
-    public class NutritionRequestMapper
+    public class NutritionRequestMapper : INutritionRequestMapper
     {
         public Internal.FoodEvaluated.NutritionRequest Map(External.NutritionRequest request)
         {

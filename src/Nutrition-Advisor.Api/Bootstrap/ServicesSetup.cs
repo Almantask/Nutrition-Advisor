@@ -1,4 +1,6 @@
-﻿namespace NutritionAdvisor.Api.Bootstrap
+﻿using NutritionAdvisor.Api.Mappers;
+
+namespace NutritionAdvisor.Api.Bootstrap
 {
     public class ServicesSetup
     {
@@ -11,6 +13,8 @@
                     .AddControllerServices()
                     .AddDocsServices()
                     .AddHealthChecks();
+
+            services.AddSingleton<INutritionRequestMapper, NutritionRequestMapper>();
         }
     }
 }
