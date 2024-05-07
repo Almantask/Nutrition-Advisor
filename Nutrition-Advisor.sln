@@ -22,15 +22,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pseudo", "Pseudo", "{FA1CA7
 		src\Pseudo\FoodProductsProviderWithCache.cs = src\Pseudo\FoodProductsProviderWithCache.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutritionAdvisor.UseCases", "src\NutritionAdvisor.UseCases\NutritionAdvisor.UseCases.csproj", "{F89FCCC4-8B3C-4D93-920B-549A2BF67478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutritionAdvisor.UseCases", "src\NutritionAdvisor.UseCases\NutritionAdvisor.UseCases.csproj", "{F89FCCC4-8B3C-4D93-920B-549A2BF67478}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutritionAdvisor.Infrastructure", "src\NutritionAdvisor.Infrastructure\NutritionAdvisor.Infrastructure.csproj", "{6D9558D6-DF74-4D6C-BBB5-41A01C476ECC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutritionAdvisor.Infrastructure", "src\NutritionAdvisor.Infrastructure\NutritionAdvisor.Infrastructure.csproj", "{6D9558D6-DF74-4D6C-BBB5-41A01C476ECC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NutritionAdvisor.Domain", "src\NutritionAdvisor.Domain\NutritionAdvisor.Domain.csproj", "{31540113-C5FB-4F4F-8C16-31C94D71DB8D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A353AD59-F9B5-43AC-82E9-922F97AD2F60}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DBE9EC40-88B7-4407-AB93-F1DA76572B87}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{AD6EFC32-752E-4639-9FC1-CAC3EACDC40F}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
