@@ -26,15 +26,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Test with coverage
       run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build --collect:"XPlat Code Coverage"
-    - name: Install ReportGenerator
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
-    - name: Generate coverage report
-      run: reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverage -reporttypes:"Cobertura;HtmlInline_AzurePipelines;Badges"
     - name: Upload coverage report
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-report
-        path: $(Build.SourcesDirectory)/coverage
+      run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r /**/coverage.cobertura.xml
     - name: Codacy Analysis
       uses: codacy/codacy-analysis-cli-action@v4
       with:
