@@ -28,6 +28,11 @@ jobs:
       run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build --collect:"XPlat Code Coverage"
     - name: Upload coverage report
       run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r /**/coverage.cobertura.xml
+      env:
+        CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        CODACY_ORGANIZATION_PROVIDER: ${{ secrets.CODACY_ORGANIZATION_PROVIDER }}
+        CODACY_USERNAME: ${{ secrets.CODACY_USERNAME }}
+        CODACY_PROJECT_NAME: ${{ secrets.CODACY_PROJECT_NAME }}
     - name: Codacy Analysis
       uses: codacy/codacy-analysis-cli-action@v4
       with:
