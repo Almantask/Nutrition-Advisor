@@ -29,12 +29,12 @@ jobs:
     - name: Install ReportGenerator
       run: dotnet tool install --global dotnet-reportgenerator-globaltool
     - name: Generate coverage report
-      run: reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.ArtifactStagingDirectory)/coverage -reporttypes:"Cobertura;HtmlInline_AzurePipelines;Badges"
+      run: reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverage -reporttypes:"Cobertura;HtmlInline_AzurePipelines;Badges"
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
       with:
         name: coverage-report
-        path: $(Build.ArtifactStagingDirectory)/coverage
+        path: $(Build.SourcesDirectory)/coverage
     - name: Codacy Analysis
       uses: codacy/codacy-analysis-cli-action@v4
       with:
