@@ -26,4 +26,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build
-  
+    - name: Codacy Analysis
+      uses: codacy/codacy-analysis-cli-action@v4
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        upload: true
