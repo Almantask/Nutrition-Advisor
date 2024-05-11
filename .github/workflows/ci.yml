@@ -25,14 +25,10 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build --collect:"XPlat Code Coverage"
-      continue-on-error: true  # Ensures the workflow continues even if tests fail
-    - name: Install ReportGenerator tool
-      run: dotnet tool install -g dotnet-reportgenerator-globaltool
-    - name: Generate Cobertura Coverage Report
-      run: reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:coverage" -reporttypes:"Cobertura"
-    - name: Codacy Coverage Reporter
-      uses: codacy/codacy-coverage-reporter-action@v4
+      run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build
+    - name: Codacy Analysis
+      uses: codacy/codacy-analysis-cli-action@v4
       with:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        coverage-reports: coverage/coverage.cobertura.xml
+        upload: true
+        coverage-reports: '**/coverage.*.xml'
