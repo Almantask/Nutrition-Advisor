@@ -25,5 +25,5 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test # run only NutritionAdvisor.Tests
-      run: dotnet test --no-build --filter "FullyQualifiedName~NutritionAdvisor.Tests"
+      run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build
   

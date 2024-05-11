@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NutritionAdvisor.UseCases.Nutrition;
 using NutritionAdvisor.Api.Controllers;
-using NutritionAdvisor.Domain.FoodEvaluated;
+using NutritionAdvisor.Api.Mappers;
+using Dto = NutritionAdvisor.Api.Dtos;
+using Model = NutritionAdvisor.Domain.FoodEvaluated;
 
 namespace NutritionAdvisor.Api.Tests
 {
@@ -13,15 +15,22 @@ namespace NutritionAdvisor.Api.Tests
         {
             // Arrange
             var nutritionServiceMock = new Mock<INutritionServiceV1>();
-            var nutritionController = new NutritionControllerV1(nutritionServiceMock.Object);
-            var nutritionRequest = new NutritionRequest();
+            var mapper = new Mock<INutritionRequestMapper>();
 
+            var nutritionController = new NutritionControllerV1(nutritionServiceMock.Object, mapper.Object);
+            var dtoRequest = new Dto.NutritionRequest();
+            var domainRequest = new Model.NutritionRequest();
+
+            mapper
+                .Setup(x => x.Map(dtoRequest))
+                .Returns(domainRequest);
+            
             // Act
-            var result = await nutritionController.GetNutritionResponse(nutritionRequest);
+            var result = await nutritionController.GetNutritionResponse(dtoRequest);
 
             // Assert
             Assert.IsType<OkObjectResult>(result.Result);
-            nutritionServiceMock.Verify(x => x.GetNutritionResponse(nutritionRequest), Times.Once);
+            nutritionServiceMock.Verify(x => x.GetNutritionResponse(domainRequest), Times.Once);
         }
     }
 }
