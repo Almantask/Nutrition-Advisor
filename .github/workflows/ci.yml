@@ -28,22 +28,22 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-    # - name: Test with coverage
-    #   run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build --collect:"XPlat Code Coverage"
+    - name: Test with coverage
+      run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build --collect:"XPlat Code Coverage"
     
-    # - name: Upload coverage report
-    #   run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r /**/coverage.cobertura.xml
-    #   env:
-    #     CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+    - name: Upload coverage report
+      run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r /**/coverage.cobertura.xml
+      env:
+        CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
-    # - name: Codacy Analysis
-    #   uses: codacy/codacy-analysis-cli-action@v4
-    #   with:
-    #     project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-    #     upload: true
+    - name: Codacy Analysis
+      uses: codacy/codacy-analysis-cli-action@v4
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        upload: true
 
     - name: Publish API package to deploy
-      run: dotnet publish ./src/Nutrition-Advisor.Api/Nutrition-Advisor.Api.csproj --configuration Release --no-build --output ./publish  
+      run: dotnet publish ./src/Nutrition-Advisor.Api/Nutrition-Advisor.Api.csproj --configuration Release --no-restore --output ./publish  
 
     - name: Upload API package to staging
       uses: actions/upload-artifact@v3
