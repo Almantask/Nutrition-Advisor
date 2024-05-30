@@ -43,4 +43,4 @@ jobs:
         upload: true
     
     - name: Publish API package to deploy
-      run: dotnet publish ./Nutrition-Advisor.Api/Nutrition-Advisor.Api.csproj --configuration Release --no-restore --output ./publish
+      run: dotnet publish ./src/Nutrition-Advisor.Api/Nutrition-Advisor.Api.csproj --configuration Release --no-restore --output ./publish
