@@ -16,22 +16,31 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+  
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build --no-restore
+
     - name: Test with coverage
       run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build --collect:"XPlat Code Coverage"
+    
     - name: Upload coverage report
       run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r /**/coverage.cobertura.xml
       env:
         CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+
     - name: Codacy Analysis
       uses: codacy/codacy-analysis-cli-action@v4
       with:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
         upload: true
+    
+    - name: Publish
+      run: dotnet publish -c Release -o ./publish
