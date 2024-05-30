@@ -55,6 +55,3 @@ jobs:
       with:
         app-name: 'as-nutrition-api-dv-eastus'
         package: ./publish
-
-    - name: Azure App Service Restart
-      run: az webapp restart --name ${{ secrets.AZURE_WEBAPP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
