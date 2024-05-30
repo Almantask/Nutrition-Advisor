@@ -1,0 +1,35 @@
+name: Nutrition API - CD
+
+on:
+  push:
+    branches:
+      - "main"
+      - "release/*"
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download API package from build pipeline
+      uses: actions/download-artifact@v3
+      with:
+        name: nutrition-api
+        path: ./publish
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'as-nutrition-api-dv-eastus'
+        package: ./publish
+
+    - name: Azure App Service Restart
+      run: az webapp restart --name ${{ secrets.AZURE_WEBAPP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
