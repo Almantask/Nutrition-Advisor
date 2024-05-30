@@ -26,7 +26,7 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration Release
 
     - name: Test with coverage
       run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build --collect:"XPlat Code Coverage"
@@ -43,7 +43,7 @@ jobs:
         upload: true
 
     - name: Publish API package to deploy
-      run: dotnet publish ./src/Nutrition-Advisor.Api/Nutrition-Advisor.Api.csproj --configuration Release --no-restore --output ./publish  
+      run: dotnet publish ./src/Nutrition-Advisor.Api/Nutrition-Advisor.Api.csproj --configuration Release --no-build --output ./publish  
 
     - name: Upload API package to staging
       uses: actions/upload-artifact@v3
