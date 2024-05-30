@@ -43,4 +43,4 @@ jobs:
         upload: true
     
     - name: Publish
-      run: dotnet publish -c Release -o ./publish
+      run: dotnet publish --configuration Release --no-restore --output ./publish
