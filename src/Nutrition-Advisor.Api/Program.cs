@@ -6,18 +6,13 @@ ServicesSetup.AddServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// swagger middleware
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    // swagger middleware
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nutrition-Advisor.Api v1");
-        c.SwaggerEndpoint("/swagger/v2/swagger.json", "Nutrition-Advisor.Api v2");
-    });
-
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nutrition-Advisor.Api v1");
+    c.SwaggerEndpoint("/swagger/v2/swagger.json", "Nutrition-Advisor.Api v2");
+});
 
 app.UseHttpsRedirection();
 
