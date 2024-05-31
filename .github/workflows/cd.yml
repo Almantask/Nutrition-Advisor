@@ -33,7 +33,7 @@ jobs:
       run: dotnet publish ./src/Nutrition-Advisor.Api/Nutrition-Advisor.Api.csproj --configuration Release --no-build --output ./publish  
 
     - name: Replace tokens
-    - uses: cschleiden/replace-tokens@v1
+      uses: cschleiden/replace-tokens@v1
       with:
         files: '["**/appsettings.json"]'
       env:
