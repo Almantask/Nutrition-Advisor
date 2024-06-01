@@ -78,3 +78,13 @@ jobs:
       with:
         app-name: as-nutrition-api-${{ vars.ENV_PREFIX }}-eastus
         package: ./publish
+
+    - name: Verify response code 200
+      run: |
+        response_code=$(curl -s -o /dev/null -w "%{http_code}" https://as-nutrition-api-${{ inputs.environment }}-eastus.azurewebsites.net/health)
+        if [ "$response_code" -ne 200 ]; then
+          echo "Health check failed with response code $response_code"
+          exit 1
+        else
+          echo "Health check passed with response code $response_code"
+        fi
