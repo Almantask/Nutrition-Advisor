@@ -30,6 +30,7 @@ jobs:
           const providedRunId = "${{ github.event.inputs.run_id }}";
           if (providedRunId) {
             core.setOutput('run_id', providedRunId);
+            console.log(`Using provided run_id: ${providedRunId}`);
           } else {
             const workflow_id = 'ci.yml';
             const runs = await github.rest.actions.listWorkflowRuns({
@@ -40,7 +41,9 @@ jobs:
             });
             const latest_run_id = runs.data.workflow_runs[0].id;
             core.setOutput('run_id', latest_run_id);
+            console.log(`Using latest run_id: ${latest_run_id}`);
           }
+          
 
 
     - name: Download API package from build pipeline
