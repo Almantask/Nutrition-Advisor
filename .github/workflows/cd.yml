@@ -6,7 +6,11 @@ on:
       environment:
         description: 'Deployment environment'
         required: true
-        default: 'production'
+        type: choice
+        options:
+          - development
+          - production
+        default: production
       run_id:
         description: 'CI run id (https://api.github.com/repos/almantask/nutrition-advisor/actions/runs). If not provided will use latest.'
         required: false
