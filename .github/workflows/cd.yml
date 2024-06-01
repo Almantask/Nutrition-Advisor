@@ -63,6 +63,7 @@ jobs:
         files: '["**/appsettings.json"]'
       env:
         OpenAi_ApiKey: ${{ secrets.OPENAI_API_KEY }}
+        ApiKey: ${{ secrets.API_KEY }}
 
     - name: Login to Azure using managed identity
       uses: azure/login@v2

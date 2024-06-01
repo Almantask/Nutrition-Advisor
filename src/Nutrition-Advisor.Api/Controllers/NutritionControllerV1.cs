@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NutritionAdvisor.Api.Dtos;
 using NutritionAdvisor.Api.Mappers;
+using NutritionAdvisor.Api.Security;
 using NutritionAdvisor.UseCases.Nutrition;
 
 namespace NutritionAdvisor.Api.Controllers
@@ -9,6 +10,7 @@ namespace NutritionAdvisor.Api.Controllers
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
     [Route("api/v{version:apiVersion}/nutrition")]
+    [ProtectedWithApiKey]
     [ApiController]
     public class NutritionControllerV1 : ControllerBase
     {
