@@ -57,12 +57,12 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         run-id: ${{ steps.get_run_id.outputs.run_id }}
 
-    # - name: Replace tokens
-    #   uses: cschleiden/replace-tokens@v1
-    #   with:
-    #     files: '["**/appsettings.json"]'
-    #   env:
-    #     OpenAi_ApiKey: ${{ secrets.OPENAI_API_KEY }}
+    - name: Replace tokens
+      uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["**/appsettings.json"]'
+      env:
+        OpenAi_ApiKey: ${{ secrets.OPENAI_API_KEY }}
 
     - name: Login to Azure using managed identity
       uses: azure/login@v2
