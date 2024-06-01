@@ -1,20 +1,21 @@
 name: Nutrition API - CD
 
 on:
-  push:
-    branches:
-      - "main"
-      - "release/*"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
 
 jobs:
   deploy:
 
     runs-on: ubuntu-latest
-    environment:
-      name: production
     permissions:
       id-token: write
 
+    # note that it is not ideal as you will have to rerun CI to be able to run CD latest
     steps:
     - name: Get the latest ci workflow run-id for the deployment artifact
       id: get_run_id
