@@ -53,7 +53,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: nutrition-api
-        path: ./publish
+        path: ./publish/api
         github-token: ${{ secrets.GITHUB_TOKEN }}
         run-id: ${{ steps.get_run_id.outputs.run_id }}
 
@@ -77,4 +77,21 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: as-nutrition-api-${{ vars.ENV_PREFIX }}-eastus
-        package: ./publish
+        package: ./publish/api
+
+    - name: Download tests package from build pipeline
+      uses: actions/download-artifact@v4
+      with:
+        name: nutrition-api-tests
+        path: ./publish/tests
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        run-id: ${{ steps.get_run_id.outputs.run_id }}
+
+    - name: Replace tokens
+      uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["**/appsettings.json"]'
+        Smoke_Test_Target_Uri: ${{ vars.BASE_URI }}
+
+    - name: Run smoke tests
+      run: dotnet test ./public/tests/Nutrition-Advisor.Api.Tests/Nutrition-Advisor.Api.Tests.dll --filter FullyQualifiedName~NutritionAdvisor.Api.Tests.Smoke
