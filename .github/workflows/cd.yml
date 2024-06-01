@@ -10,7 +10,7 @@ on:
         options:
           - development
           - production
-        default: production
+        default: development
       run_id:
         description: 'CI run id (https://api.github.com/repos/almantask/nutrition-advisor/actions/runs). If not provided will use latest.'
         required: false
@@ -78,5 +78,5 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'as-nutrition-api-dv-eastus'
+        app-name: as-nutrition-api-${{ env.ENV_PREFIX }}-eastus
         package: ./publish
