@@ -6,14 +6,15 @@ namespace NutritionAdvisor.Api.Bootstrap
     {
         public static void AddServices(IServiceCollection services, IConfigurationRoot configuration)
         {
-             services
-                    .AddDomainServices()
-                    .AddControllerServices()
-                    .AddOpenAiApiServices(configuration)
-                    .AddControllerServices()
-                    .AddDocsServices()
-                    .AddHealthChecks();
-
+            services
+                   .AddDomainServices()
+                   .AddControllerServices()
+                   .AddOpenAiApiServices(configuration)
+                   .AddControllerServices()
+                   .AddDocsServices()
+                   .AddApplicationInsightsTelemetry()
+                   .AddHealthChecks();
+                   
             services.AddSingleton<INutritionRequestMapper, NutritionRequestMapper>();
         }
     }

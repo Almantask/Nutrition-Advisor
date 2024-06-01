@@ -1,14 +1,12 @@
-﻿namespace NutritionAdvisor.Api.Bootstrap
+﻿using NutritionAdvisor.Api.Extensions;
+
+namespace NutritionAdvisor.Api.Bootstrap
 {
     public static class OpenAiApiSetup
     {
         public static IServiceCollection AddOpenAiApiServices(this IServiceCollection services, IConfigurationRoot configuration)
         {
-            var openApiKey = configuration["OpenAi:ApiKey"];
-            if (string.IsNullOrEmpty(openApiKey))
-            {
-                throw new InvalidOperationException("OpenAi:ApiKey is required");
-            }
+            var openApiKey = configuration.GetPlaceholderedValueOf("OpenAi:ApiKey");
 
             services.AddOpenAi(settings =>
             {

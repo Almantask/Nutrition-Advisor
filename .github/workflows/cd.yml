@@ -64,6 +64,7 @@ jobs:
       env:
         OpenAi_ApiKey: ${{ secrets.OPENAI_API_KEY }}
         ApiKey: ${{ secrets.API_KEY }}
+        AppInsights_InstrumentationKey: ${{ secrets.APPINSIGHTS_INSTRUMENTATION_KEY }}
 
     - name: Login to Azure using managed identity
       uses: azure/login@v2

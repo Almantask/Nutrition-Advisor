@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using NutritionAdvisor.Api.Extensions;
 
 namespace NutritionAdvisor.Api.Security
 {
@@ -17,7 +18,7 @@ namespace NutritionAdvisor.Api.Security
             }
 
             var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-            var apiKey = configuration["ApiKey"];
+            var apiKey = configuration.GetPlaceholderedValueOf("ApiKey");
 
             if (!string.Equals(apiKey, potentialApiKey))
             {
