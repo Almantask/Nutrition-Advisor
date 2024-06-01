@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+    environment:
+      name: ${{ inputs.environment }}
 
     steps:
     - name: Get the latest ci workflow run-id for the deployment artifact
