@@ -18,9 +18,7 @@ namespace NutritionAdvisor.Api.Tests.Regression
         {
             // Arrange
             var requestBody = @"{
-                              ""Goal"": {
-                                ""Name"": ""Become Fit""
-                              },
+                              ""Goal"": ""Become Fit"",
                               ""Person"": {
                                 ""Gender"": ""Male"",
                                 ""Weight"": 85,
@@ -67,8 +65,16 @@ namespace NutritionAdvisor.Api.Tests.Regression
                                         }
                                     }";
 
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("api/v1/Nutrition", UriKind.Relative),
+                Content = new StringContent(requestBody, Encoding.UTF8, "application/json"),
+                Headers = { { "X-API-KEY", "444A19BE-FCFD-4C0E-9FCB-3A833F13C6B1" } }
+            };
+
             // Act
-            var response = await TestHttpClient.Instance.PostAsync("api/Nutrition", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            var response = await TestHttpClient.Instance.SendAsync(request);
 
             // Assert
             // Read response content as string

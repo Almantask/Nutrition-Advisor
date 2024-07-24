@@ -24,6 +24,17 @@ namespace NutritionAdvisor.Infrastructure.FoodApi
                             new() { Name = "Banana", AmountG = 150 }
                         ]
                     }
+                },
+                {
+                    "French Fries With Gyros",
+                    new Recipe
+                    { Name = "French Fries With Gyros",
+                        Ingredients =
+                        [
+                            new() { Name = "French Fries", AmountG = 50 },
+                            new() { Name = "Gyros", AmountG = 100 }
+                        ]
+                    }
                 }
                 // Add more recipes as needed
             };

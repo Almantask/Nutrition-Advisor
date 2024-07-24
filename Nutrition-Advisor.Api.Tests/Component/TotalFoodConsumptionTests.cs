@@ -6,7 +6,7 @@ using Moq;
 using Newtonsoft.Json;
 using NutritionAdvisor.Domain.FoodEvaluated;
 using NutritionAdvisor.Domain.FoodUnevaluated;
-using NutritionAdvisor.Domain.Persona;
+using Dto = NutritionAdvisor.Api.Dtos;
 using System.Text;
 using static NutritionAdvisor.Tests.Api.Dummy.DummyValueGenerator;
 
@@ -36,15 +36,27 @@ namespace NutritionAdvisor.Api.Tests.Component
         {
             // Arrange
             var requestedFood = SetupFoodReturned("Gyros");
-            var foodInRequest = new[] { new Food { Name = "Gyros", AmountG = 200 } };
-            var requestBody = BuildFoodRequest(foodInRequest);
+            var foodInRequest = new[] { new Dto.Food { Name = "Gyros", AmountG = 200 } };
+            var requestBody = BuildFoodRequestBody(foodInRequest);
+            var request = BuildFoodRequest(requestBody);
 
             // Act
-            var response = await client.PostAsync("/api/nutrition", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            var response = await client.SendAsync(request);
 
             // Assert
             var requestedFoods = new[] { requestedFood };
             await AssertResponseEqualsExpectedFoodIntake(response, requestedFoods, foodInRequest);
+        }
+
+        private HttpRequestMessage BuildFoodRequest(string requestBody)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/v1/nutrition")
+            {
+                Content = new StringContent(requestBody, Encoding.UTF8, "application/json"),
+                Headers = { { "X-API-KEY", "444A19BE-FCFD-4C0E-9FCB-3A833F13C6B1" } }
+            };
+
+            return request;
         }
 
         [Fact]
@@ -53,11 +65,12 @@ namespace NutritionAdvisor.Api.Tests.Component
             // Arrange
             var requestedFood = SetupFoodReturned("Gyros");
             var requestedFood2 = SetupFoodReturned("French Fries");
-            var foodInRequest = new[] { new Food { Name = "Gyros", AmountG = 200 }, new Food { Name = "French Fries", AmountG = 200 } };
-            var requestBody = BuildFoodRequest(foodInRequest);
+            var foodInRequest = new[] { new Dto.Food { Name = "Gyros", AmountG = 200 }, new Dto.Food { Name = "French Fries", AmountG = 200 } };
+            var requestBody = BuildFoodRequestBody(foodInRequest);
+            var request = BuildFoodRequest(requestBody);
 
             // Act
-            var response = await client.PostAsync("/api/nutrition", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            var response = await client.SendAsync(request);
 
             // Assert
             var requestedFoods = new[] { requestedFood, requestedFood2 };
@@ -71,23 +84,30 @@ namespace NutritionAdvisor.Api.Tests.Component
             var requestedFood = SetupFoodReturned("Gyros");
             var requestedFood2 = SetupFoodReturned("French Fries");
             SetupRecipeReturned("Gyros with French Fries", "Gyros", "French Fries");
-            var foodInRequest = new[] { new Food { Name = "Gyros with French Fries", AmountG = 100 } };
-            var requestBody = BuildFoodRequest(new Food() { Name = "Gyros with French Fries", AmountG = 100 });
+            var foodInRequest = new[] { new Dto.Food { Name = "Gyros with French Fries", AmountG = 100 } };
+            var requestBody = BuildFoodRequestBody(new Dto.Food() { Name = "Gyros with French Fries", AmountG = 100 });
+            var request = BuildFoodRequest(requestBody);
 
             // Act
-            var response = await client.PostAsync("/api/nutrition", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            var response = await client.SendAsync(request);
 
             // Assert
             var requestedFoods = new[] { requestedFood, requestedFood2 };
-            await AssertResponseEqualsExpectedFoodIntake(response, requestedFoods, foodInRequest);
+            var foodInRequestActual = new[] { 
+                // When setting up food we hardcode every ingredient in the recipe to be 100g for simplicity.
+                // Prone to bugs, but this should have been unit tested at lower levels in any case.
+                new Dto.Food { Name = "Gyros", AmountG = 100 },
+                new Dto.Food { Name = "French Fries", AmountG = 100 } 
+            };
+            await AssertResponseEqualsExpectedFoodIntake(response, requestedFoods, foodInRequestActual);
         }
 
-        private string BuildFoodRequest(params Food[] foods)
+        private string BuildFoodRequestBody(params Dto.Food[] foods)
         {
-            var requestData = new NutritionRequest
+            var requestData = new Dto.NutritionRequest
             {
-                Goal = Goal.BecomeFit,
-                Person = Any<Person>(),
+                Goal = "Become Fit",
+                Person = Any<Dto.Person>(),
                 Food = foods
             };
 
@@ -104,7 +124,7 @@ namespace NutritionAdvisor.Api.Tests.Component
             return requestedFood;
         }
 
-        private async Task AssertResponseEqualsExpectedFoodIntake(HttpResponseMessage response, FoodProperties[] foodProperties, Food[] foodInRequest)
+        private async Task AssertResponseEqualsExpectedFoodIntake(HttpResponseMessage response, FoodProperties[] foodProperties, Dto.Food[] foodInRequest)
         {
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
