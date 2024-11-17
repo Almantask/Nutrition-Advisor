@@ -30,6 +30,7 @@ namespace NutritionAdvisor.UseCases.Nutrition
 
         public async Task<NutritionResponse> GetNutritionResponse(NutritionRequest request)
         {
+            // Testing Codacy (to be removed) - this comment is not needed, only for PR
             NutritionResponse response = await _processor.Process(request);
 
             SendNotification(response);
