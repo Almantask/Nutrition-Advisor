@@ -29,7 +29,7 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Test with coverage
-      run: dotnet test ./Nutrition-Advisor.Tests/NutritionAdvisor.Tests.csproj --no-build --collect:"XPlat Code Coverage"
+      run: dotnet test --no-build --verbosity normal
     
     - name: Upload coverage report
       run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r /**/coverage.cobertura.xml
